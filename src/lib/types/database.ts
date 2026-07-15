@@ -12,6 +12,127 @@ export type Database = {
   }
   public: {
     Tables: {
+      certifications: {
+        Row: {
+          certified_at: string
+          certified_by: string
+          created_at: string
+          document_id: string
+          file_hash: string
+          hash_algorithm: string
+          id: string
+          level: Database["public"]["Enums"]["certification_level"]
+          public_code: string
+          revoked_at: string | null
+          revoked_reason: string | null
+          status: Database["public"]["Enums"]["certification_status"]
+        }
+        Insert: {
+          certified_at?: string
+          certified_by: string
+          created_at?: string
+          document_id: string
+          file_hash: string
+          hash_algorithm?: string
+          id?: string
+          level?: Database["public"]["Enums"]["certification_level"]
+          public_code?: string
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          status?: Database["public"]["Enums"]["certification_status"]
+        }
+        Update: {
+          certified_at?: string
+          certified_by?: string
+          created_at?: string
+          document_id?: string
+          file_hash?: string
+          hash_algorithm?: string
+          id?: string
+          level?: Database["public"]["Enums"]["certification_level"]
+          public_code?: string
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          status?: Database["public"]["Enums"]["certification_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certifications_certified_by_fkey"
+            columns: ["certified_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "certifications_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          created_at: string
+          created_by: string
+          file_name: string
+          file_size_bytes: number
+          id: string
+          mime_type: string
+          organization_id: string | null
+          owner_id: string | null
+          storage_path: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          file_name: string
+          file_size_bytes: number
+          id?: string
+          mime_type: string
+          organization_id?: string | null
+          owner_id?: string | null
+          storage_path: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          file_name?: string
+          file_size_bytes?: number
+          id?: string
+          mime_type?: string
+          organization_id?: string | null
+          owner_id?: string | null
+          storage_path?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organizations: {
         Row: {
           created_at: string
@@ -163,6 +284,51 @@ export type Database = {
           },
         ]
       }
+      versions: {
+        Row: {
+          created_at: string
+          created_by: string
+          document_id: string
+          file_hash: string
+          id: string
+          storage_path: string
+          version_number: number
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          document_id: string
+          file_hash: string
+          id?: string
+          storage_path: string
+          version_number: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          document_id?: string
+          file_hash?: string
+          id?: string
+          storage_path?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "versions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "versions_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -176,6 +342,8 @@ export type Database = {
         | "professional"
         | "business"
         | "internal_staff"
+      certification_level: "standard" | "renforce" | "professionnel"
+      certification_status: "active" | "revoked"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -309,6 +477,8 @@ export const Constants = {
         "business",
         "internal_staff",
       ],
+      certification_level: ["standard", "renforce", "professionnel"],
+      certification_status: ["active", "revoked"],
     },
   },
 } as const
