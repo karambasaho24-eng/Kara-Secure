@@ -24,6 +24,8 @@ export function RequestResetForm() {
         />
       </div>
 
+      {state.error && <p className="text-sm text-red-400">{state.error}</p>}
+
       <button
         type="submit"
         disabled={pending}
@@ -31,13 +33,6 @@ export function RequestResetForm() {
       >
         {pending ? "Envoi…" : "Envoyer le lien de réinitialisation"}
       </button>
-
-      {/* Message identique qu'un compte existe ou non (anti-énumération) */}
-      {state.error === null && pending === false && state !== initialState && (
-        <p className="text-sm text-neutral-300">
-          Si un compte existe avec cet email, un lien de réinitialisation vient d&apos;être envoyé.
-        </p>
-      )}
     </form>
   );
 }

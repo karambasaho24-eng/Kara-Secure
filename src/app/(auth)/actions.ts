@@ -141,8 +141,8 @@ export async function requestPasswordReset(
     redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/mot-de-passe-oublie/nouveau`,
   });
 
-  // Toujours le même message, que l'email existe ou non (anti-énumération).
-  return { error: null };
+  // Toujours la même redirection, que l'email existe ou non (anti-énumération).
+  redirect("/mot-de-passe-oublie/envoye");
 }
 
 export async function updatePassword(
