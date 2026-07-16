@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { CertifyButton } from "@/components/documents/certify-button";
 import { NewVersionForm } from "@/components/documents/new-version-form";
+import { generateVerificationQrCode } from "@/lib/documents/qrcode";
 
 const levelLabels: Record<string, string> = {
   standard: "Standard",
@@ -50,6 +51,9 @@ export default async function DocumentDetailPage({
 
   const activeCertification = certifications?.find((c) => c.status === "active");
   const latestVersion = versions?.[0];
+  const qrCodeDataUrl = activeCertification
+    ? await generateVerificationQrCode(activeCertification.public_code)
+    : null;
 
   // Statut : compare l'empreinte de la dernière version au hash de la
   // certification active pour savoir si le document a bougé depuis.
@@ -103,32 +107,43 @@ export default async function DocumentDetailPage({
 
         {/* Certification */}
         {activeCertification ? (
-          <div className="space-y-3 rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-6">
-            <p className="text-sm font-medium text-emerald-400">
-              ✓ Certifié — Niveau {levelLabels[activeCertification.level]}
-            </p>
-            <dl className="space-y-2 text-sm">
-              <div>
-                <dt className="text-xs uppercase tracking-wide text-neutral-500">
-                  Identifiant de certification
-                </dt>
-                <dd className="font-mono text-neutral-300">{activeCertification.public_code}</dd>
+          <div className="space-y-4 rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-3">
+                <p className="text-sm font-medium text-emerald-400">
+                  ✓ Certifié — Niveau {levelLabels[activeCertification.level]}
+                </p>
+                <dl className="space-y-2 text-sm">
+                  <div>
+                    <dt className="text-xs uppercase tracking-wide text-neutral-500">
+                      Identifiant de certification
+                    </dt>
+                    <dd className="font-mono text-neutral-300">{activeCertification.public_code}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs uppercase tracking-wide text-neutral-500">
+                      Empreinte SHA-256
+                    </dt>
+                    <dd className="break-all font-mono text-xs text-neutral-400">
+                      {activeCertification.file_hash}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs uppercase tracking-wide text-neutral-500">Date</dt>
+                    <dd className="text-neutral-300">
+                      {new Date(activeCertification.certified_at).toLocaleString("fr-FR")}
+                    </dd>
+                  </div>
+                </dl>
               </div>
-              <div>
-                <dt className="text-xs uppercase tracking-wide text-neutral-500">
-                  Empreinte SHA-256
-                </dt>
-                <dd className="break-all font-mono text-xs text-neutral-400">
-                  {activeCertification.file_hash}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xs uppercase tracking-wide text-neutral-500">Date</dt>
-                <dd className="text-neutral-300">
-                  {new Date(activeCertification.certified_at).toLocaleString("fr-FR")}
-                </dd>
-              </div>
-            </dl>
+              {qrCodeDataUrl && (
+                <div className="shrink-0 text-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={qrCodeDataUrl} alt="QR code de vérification" className="h-28 w-28" />
+                  <p className="mt-1 text-[10px] text-neutral-500">Scanner pour vérifier</p>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <CertifyButton documentId={document.id} />
