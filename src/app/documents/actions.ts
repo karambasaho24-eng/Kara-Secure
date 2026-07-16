@@ -10,13 +10,39 @@ import { computeSha256, assertValidFile } from "@/lib/documents/hash";
 export type DocumentActionState = { error: string | null };
 
 /**
- * Upload d'un document. Le fichier est stocké dans un chemin imprévisible
- * ({owner_id_ou_org_id}/{uuid}.{ext}) pour empêcher toute devinette d'URL.
+ * Génère un chemin de stockage sécurisé pour un upload direct navigateur ->
+ * Supabase Storage. Le fichier ne transite JAMAIS par une fonction serveur
+ * Netlify (qui a ses propres limites de taille de requête, indépendantes de
+ * la config Next.js) — seul ce chemin (texte, quelques octets) est généré ici.
  */
-export async function uploadDocument(
-  _prevState: DocumentActionState,
-  formData: FormData
-): Promise<DocumentActionState> {
+export async function prepareUpload(
+  organizationId: string | null,
+  fileName: string
+): Promise<{ storagePath: string } | { error: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Non connecté." };
+  }
+
+  const folderKey = organizationId ?? user.id;
+  const ext = fileName.split(".").pop() ?? "bin";
+  const storagePath = `${folderKey}/${randomUUID()}.${ext}`;
+
+  return { storagePath };
+}
+
+/**
+ * Finalise un upload de document après que le fichier ait été envoyé
+ * directement du navigateur vers Supabase Storage. Ne reçoit que des
+ * métadonnées (jamais le fichier) — le hash est recalculé ici en
+ * re-téléchargeant le fichier depuis Storage côté serveur (donc toujours
+ * digne de confiance, jamais fourni par le client).
+ */
+export async function finalizeDocumentUpload(formData: FormData): Promise<DocumentActionState> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -26,34 +52,33 @@ export async function uploadDocument(
     redirect("/connexion");
   }
 
-  const file = formData.get("file") as File | null;
+  const storagePath = formData.get("storagePath") as string;
+  const fileName = formData.get("fileName") as string;
+  const fileSize = Number(formData.get("fileSize"));
+  const mimeType = formData.get("mimeType") as string;
   const organizationId = (formData.get("organizationId") as string) || null;
 
-  if (!file) {
-    return { error: "Aucun fichier sélectionné." };
+  if (!storagePath || !fileName || !mimeType || !fileSize) {
+    return { error: "Informations manquantes." };
   }
+
+  // Re-télécharge le fichier fraîchement uploadé pour calculer son empreinte
+  // côté serveur (jamais confiée au client) et vérifier qu'il est valide.
+  const { data: fileBlob, error: downloadError } = await supabase.storage
+    .from("documents")
+    .download(storagePath);
+
+  if (downloadError || !fileBlob) {
+    return { error: "Fichier introuvable après envoi. Réessayez." };
+  }
+
+  const buffer = Buffer.from(await fileBlob.arrayBuffer());
 
   try {
-    assertValidFile(file);
+    assertValidFile(new File([buffer], fileName, { type: mimeType }));
   } catch (e) {
+    await supabase.storage.from("documents").remove([storagePath]);
     return { error: e instanceof Error ? e.message : "Fichier invalide." };
-  }
-
-  // folderKey détermine qui a accès au fichier via les policies RLS du bucket
-  // (voir migration phase3_storage_bucket) : soit l'utilisateur, soit son organisation.
-  const folderKey = organizationId ?? user.id;
-  const ext = file.name.split(".").pop() ?? "bin";
-  const storagePath = `${folderKey}/${randomUUID()}.${ext}`;
-
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-
-  const { error: uploadError } = await supabase.storage
-    .from("documents")
-    .upload(storagePath, buffer, { contentType: file.type, upsert: false });
-
-  if (uploadError) {
-    return { error: "Échec de l'envoi du fichier. Réessayez." };
   }
 
   const { data: doc, error: insertError } = await supabase
@@ -61,9 +86,9 @@ export async function uploadDocument(
     .insert({
       owner_id: organizationId ? null : user.id,
       organization_id: organizationId,
-      file_name: file.name,
-      file_size_bytes: file.size,
-      mime_type: file.type,
+      file_name: fileName,
+      file_size_bytes: fileSize,
+      mime_type: mimeType,
       storage_path: storagePath,
       created_by: user.id,
     })
@@ -71,13 +96,10 @@ export async function uploadDocument(
     .single();
 
   if (insertError || !doc) {
-    // Nettoyage : si l'insertion en base échoue, ne pas laisser un fichier orphelin.
     await supabase.storage.from("documents").remove([storagePath]);
     return { error: "Échec de l'enregistrement du document." };
   }
 
-  // Version 1 = création initiale. Le hash est calculé ici aussi (pas de
-  // hash client) pour que l'historique de versions soit complet dès le départ.
   const initialHash = computeSha256(buffer);
   await supabase.from("versions").insert({
     document_id: doc.id,
@@ -93,15 +115,44 @@ export async function uploadDocument(
 }
 
 /**
- * Nouvelle version d'un document existant. Le motif de modification est
- * obligatoire (imposé aussi en base par une contrainte CHECK) : chaque
- * évolution du document doit être justifiée pour garder la valeur de preuve
- * de l'historique.
+ * Prépare le chemin de stockage pour une nouvelle version (upload direct
+ * navigateur -> Storage, même logique anti-limite-Netlify que prepareUpload).
  */
-export async function addNewVersion(
-  _prevState: DocumentActionState,
-  formData: FormData
-): Promise<DocumentActionState> {
+export async function prepareNewVersionUpload(
+  documentId: string,
+  fileName: string
+): Promise<{ storagePath: string } | { error: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Non connecté." };
+  }
+
+  const { data: document, error: docError } = await supabase
+    .from("documents")
+    .select("owner_id, organization_id")
+    .eq("id", documentId)
+    .single();
+
+  if (docError || !document) {
+    return { error: "Document introuvable ou accès refusé." };
+  }
+
+  const folderKey = document.organization_id ?? document.owner_id!;
+  const ext = fileName.split(".").pop() ?? "bin";
+  const storagePath = `${folderKey}/${randomUUID()}.${ext}`;
+
+  return { storagePath };
+}
+
+/**
+ * Finalise l'ajout d'une nouvelle version après upload direct navigateur ->
+ * Storage. Motif de modification obligatoire (imposé aussi en base).
+ */
+export async function finalizeNewVersion(formData: FormData): Promise<DocumentActionState> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -112,30 +163,34 @@ export async function addNewVersion(
   }
 
   const documentId = formData.get("documentId") as string;
-  const file = formData.get("file") as File | null;
+  const storagePath = formData.get("storagePath") as string;
+  const fileName = formData.get("fileName") as string;
+  const fileSize = Number(formData.get("fileSize"));
+  const mimeType = formData.get("mimeType") as string;
   const modificationReason = (formData.get("modificationReason") as string)?.trim();
 
-  if (!file) {
-    return { error: "Aucun fichier sélectionné." };
-  }
   if (!modificationReason || modificationReason.length < 3) {
     return { error: "Le motif de modification est obligatoire (3 caractères minimum)." };
   }
-
-  try {
-    assertValidFile(file);
-  } catch (e) {
-    return { error: e instanceof Error ? e.message : "Fichier invalide." };
+  if (!storagePath || !fileName || !mimeType || !fileSize) {
+    return { error: "Informations manquantes." };
   }
 
-  const { data: document, error: docError } = await supabase
+  const { data: fileBlob, error: downloadError } = await supabase.storage
     .from("documents")
-    .select("id, owner_id, organization_id")
-    .eq("id", documentId)
-    .single();
+    .download(storagePath);
 
-  if (docError || !document) {
-    return { error: "Document introuvable ou accès refusé." };
+  if (downloadError || !fileBlob) {
+    return { error: "Fichier introuvable après envoi. Réessayez." };
+  }
+
+  const buffer = Buffer.from(await fileBlob.arrayBuffer());
+
+  try {
+    assertValidFile(new File([buffer], fileName, { type: mimeType }));
+  } catch (e) {
+    await supabase.storage.from("documents").remove([storagePath]);
+    return { error: e instanceof Error ? e.message : "Fichier invalide." };
   }
 
   const { data: existingVersions } = await supabase
@@ -146,22 +201,7 @@ export async function addNewVersion(
     .limit(1);
 
   const nextVersionNumber = (existingVersions?.[0]?.version_number ?? 0) + 1;
-
-  const folderKey = document.organization_id ?? document.owner_id!;
-  const ext = file.name.split(".").pop() ?? "bin";
-  const storagePath = `${folderKey}/${randomUUID()}.${ext}`;
-
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
   const fileHash = computeSha256(buffer);
-
-  const { error: uploadError } = await supabase.storage
-    .from("documents")
-    .upload(storagePath, buffer, { contentType: file.type, upsert: false });
-
-  if (uploadError) {
-    return { error: "Échec de l'envoi du fichier. Réessayez." };
-  }
 
   const { error: versionError } = await supabase.from("versions").insert({
     document_id: documentId,
@@ -177,14 +217,13 @@ export async function addNewVersion(
     return { error: "Échec de l'enregistrement de la nouvelle version." };
   }
 
-  // Le document pointe maintenant vers la dernière version.
   await supabase
     .from("documents")
     .update({
       storage_path: storagePath,
-      file_name: file.name,
-      file_size_bytes: file.size,
-      mime_type: file.type,
+      file_name: fileName,
+      file_size_bytes: fileSize,
+      mime_type: mimeType,
       updated_at: new Date().toISOString(),
     })
     .eq("id", documentId);
