@@ -79,6 +79,7 @@ export type Database = {
           file_name: string
           file_size_bytes: number
           id: string
+          kara_id: string
           mime_type: string
           organization_id: string | null
           owner_id: string | null
@@ -91,6 +92,7 @@ export type Database = {
           file_name: string
           file_size_bytes: number
           id?: string
+          kara_id?: string
           mime_type: string
           organization_id?: string | null
           owner_id?: string | null
@@ -103,6 +105,7 @@ export type Database = {
           file_name?: string
           file_size_bytes?: number
           id?: string
+          kara_id?: string
           mime_type?: string
           organization_id?: string | null
           owner_id?: string | null
@@ -291,6 +294,7 @@ export type Database = {
           document_id: string
           file_hash: string
           id: string
+          modification_reason: string | null
           storage_path: string
           version_number: number
         }
@@ -300,6 +304,7 @@ export type Database = {
           document_id: string
           file_hash: string
           id?: string
+          modification_reason?: string | null
           storage_path: string
           version_number: number
         }
@@ -309,6 +314,7 @@ export type Database = {
           document_id?: string
           file_hash?: string
           id?: string
+          modification_reason?: string | null
           storage_path?: string
           version_number?: number
         }
