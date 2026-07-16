@@ -203,6 +203,11 @@ export async function finalizeNewVersion(formData: FormData): Promise<DocumentAc
   const nextVersionNumber = (existingVersions?.[0]?.version_number ?? 0) + 1;
   const fileHash = computeSha256(buffer);
 
+  // Délai d'observation : une modification faite par le propriétaire seul
+  // (sans validation d'un tiers vérificateur) reste visiblement "en
+  // observation" pendant 48h avant d'être considérée confirmée.
+  const pendingUntil = new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString();
+
   const { error: versionError } = await supabase.from("versions").insert({
     document_id: documentId,
     version_number: nextVersionNumber,
@@ -210,6 +215,7 @@ export async function finalizeNewVersion(formData: FormData): Promise<DocumentAc
     file_hash: fileHash,
     created_by: user.id,
     modification_reason: modificationReason,
+    pending_until: pendingUntil,
   });
 
   if (versionError) {

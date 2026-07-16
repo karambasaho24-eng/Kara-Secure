@@ -44,13 +44,16 @@ export default async function DocumentDetailPage({
       .order("certified_at", { ascending: false }),
     supabase
       .from("versions")
-      .select("id, version_number, file_hash, modification_reason, created_at")
+      .select("id, version_number, file_hash, modification_reason, pending_until, created_at")
       .eq("document_id", id)
       .order("version_number", { ascending: false }),
   ]);
 
   const activeCertification = certifications?.find((c) => c.status === "active");
   const latestVersion = versions?.[0];
+  const isPending = latestVersion?.pending_until
+    ? new Date(latestVersion.pending_until) > new Date()
+    : false;
   const qrCodeDataUrl = activeCertification
     ? await generateVerificationQrCode(activeCertification.public_code)
     : null;
@@ -105,6 +108,14 @@ export default async function DocumentDetailPage({
           </dl>
         </div>
 
+        {isPending && latestVersion?.pending_until && (
+          <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm text-amber-300">
+            ⏳ Cette version est en période d&apos;observation jusqu&apos;au{" "}
+            {new Date(latestVersion.pending_until).toLocaleString("fr-FR")} — une modification
+            récente est visible dans l&apos;historique en dessous.
+          </div>
+        )}
+
         {/* Certification */}
         {activeCertification ? (
           <div className="space-y-4 rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-6">
@@ -154,21 +165,31 @@ export default async function DocumentDetailPage({
           <div className="space-y-3">
             <h2 className="text-sm font-medium text-neutral-200">Historique</h2>
             <ol className="space-y-3 border-l border-neutral-800 pl-4">
-              {versions.map((v) => (
-                <li key={v.id} className="relative">
-                  <span className="absolute -left-[21px] top-1 h-2 w-2 rounded-full bg-neutral-600" />
-                  <p className="text-sm text-neutral-300">
-                    Version {v.version_number}
-                    {v.version_number === 1 ? " — Création initiale" : ""}
-                  </p>
-                  {v.modification_reason && (
-                    <p className="text-xs text-neutral-500">{v.modification_reason}</p>
-                  )}
-                  <p className="text-xs text-neutral-600">
-                    {new Date(v.created_at).toLocaleString("fr-FR")}
-                  </p>
-                </li>
-              ))}
+              {versions.map((v) => {
+                const versionIsPending = v.pending_until
+                  ? new Date(v.pending_until) > new Date()
+                  : false;
+                return (
+                  <li key={v.id} className="relative">
+                    <span className="absolute -left-[21px] top-1 h-2 w-2 rounded-full bg-neutral-600" />
+                    <p className="text-sm text-neutral-300">
+                      Version {v.version_number}
+                      {v.version_number === 1 ? " — Création initiale" : ""}
+                      {versionIsPending && (
+                        <span className="ml-2 rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] text-amber-400">
+                          En observation
+                        </span>
+                      )}
+                    </p>
+                    {v.modification_reason && (
+                      <p className="text-xs text-neutral-500">{v.modification_reason}</p>
+                    )}
+                    <p className="text-xs text-neutral-600">
+                      {new Date(v.created_at).toLocaleString("fr-FR")}
+                    </p>
+                  </li>
+                );
+              })}
             </ol>
           </div>
         )}

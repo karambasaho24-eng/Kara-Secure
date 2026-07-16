@@ -16,6 +16,7 @@ export type Database = {
         Row: {
           certified_at: string
           certified_by: string
+          consent_given_at: string
           created_at: string
           document_id: string
           file_hash: string
@@ -30,6 +31,7 @@ export type Database = {
         Insert: {
           certified_at?: string
           certified_by: string
+          consent_given_at?: string
           created_at?: string
           document_id: string
           file_hash: string
@@ -44,6 +46,7 @@ export type Database = {
         Update: {
           certified_at?: string
           certified_by?: string
+          consent_given_at?: string
           created_at?: string
           document_id?: string
           file_hash?: string
@@ -295,6 +298,7 @@ export type Database = {
           file_hash: string
           id: string
           modification_reason: string | null
+          pending_until: string | null
           storage_path: string
           version_number: number
         }
@@ -305,6 +309,7 @@ export type Database = {
           file_hash: string
           id?: string
           modification_reason?: string | null
+          pending_until?: string | null
           storage_path: string
           version_number: number
         }
@@ -315,6 +320,7 @@ export type Database = {
           file_hash?: string
           id?: string
           modification_reason?: string | null
+          pending_until?: string | null
           storage_path?: string
           version_number?: number
         }

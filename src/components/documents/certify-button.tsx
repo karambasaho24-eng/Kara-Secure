@@ -11,6 +11,7 @@ const levels = [
 
 export function CertifyButton({ documentId }: { documentId: string }) {
   const [level, setLevel] = useState<(typeof levels)[number]["value"]>("standard");
+  const [consentChecked, setConsentChecked] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -25,7 +26,30 @@ export function CertifyButton({ documentId }: { documentId: string }) {
   }
 
   return (
-    <div className="space-y-4 rounded-lg border border-neutral-800 p-6">
+    <div className="space-y-5 rounded-xl border border-neutral-800 bg-gradient-to-b from-neutral-900 to-black p-6">
+      <div>
+        <p className="text-xs uppercase tracking-wide text-amber-400/80">Avant de continuer</p>
+        <h3 className="mt-1 text-base font-semibold text-white">
+          Vous êtes sur le point de créer l&apos;identité numérique de ce document
+        </h3>
+      </div>
+
+      <div className="space-y-3 rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-neutral-300">
+        <p>
+          Cette action attribue à ce document un <strong className="text-white">KARA-ID permanent</strong> et
+          enregistre son empreinte numérique. Vérifiez avant de continuer que :
+        </p>
+        <ul className="ml-4 list-disc space-y-1 text-neutral-400">
+          <li>c&apos;est bien le bon fichier (pas un brouillon ou une version test) ;</li>
+          <li>le contenu est correct — une erreur détectée après coup demandera une nouvelle version avec un délai d&apos;observation de 48h avant confirmation ;</li>
+          <li>vous consentez à ce que ce document soit conservé de façon sécurisée par KARA Secure pour permettre sa vérification future.</li>
+        </ul>
+        <p className="text-xs text-neutral-500">
+          Pour rappel, honnêtement : KARA Secure prouve qu&apos;un document n&apos;a pas changé depuis son
+          enregistrement — ce n&apos;est pas une garantie que son contenu est véridique.
+        </p>
+      </div>
+
       <p className="text-sm font-medium text-neutral-200">Niveau de certification</p>
       <div className="space-y-2">
         {levels.map((l) => (
@@ -51,14 +75,27 @@ export function CertifyButton({ documentId }: { documentId: string }) {
         ))}
       </div>
 
+      <label className="flex cursor-pointer items-start gap-3 text-sm text-neutral-300">
+        <input
+          type="checkbox"
+          checked={consentChecked}
+          onChange={(e) => setConsentChecked(e.target.checked)}
+          className="mt-1"
+        />
+        <span>
+          J&apos;ai vérifié que ce document est correct et je consens à sa certification et à sa
+          conservation sécurisée par KARA Secure.
+        </span>
+      </label>
+
       {error && <p className="text-sm text-red-400">{error}</p>}
 
       <button
         onClick={handleCertify}
-        disabled={isPending}
-        className="w-full rounded-lg bg-white py-2.5 font-medium text-black transition hover:bg-neutral-200 disabled:opacity-50"
+        disabled={isPending || !consentChecked}
+        className="w-full rounded-lg bg-white py-2.5 font-medium text-black transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-40"
       >
-        {isPending ? "Certification en cours…" : "Certifier ce document"}
+        {isPending ? "Certification en cours…" : "Confirmer et créer l'identité numérique"}
       </button>
     </div>
   );
