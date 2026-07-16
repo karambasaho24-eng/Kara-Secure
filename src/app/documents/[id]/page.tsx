@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { CertifyButton } from "@/components/documents/certify-button";
 import { NewVersionForm } from "@/components/documents/new-version-form";
+import { UpgradeCertificationSection } from "@/components/documents/upgrade-certification-section";
 import { generateVerificationQrCode } from "@/lib/documents/qrcode";
 
 const levelLabels: Record<string, string> = {
@@ -155,6 +156,10 @@ export default async function DocumentDetailPage({
                 </div>
               )}
             </div>
+            <UpgradeCertificationSection
+              documentId={document.id}
+              currentLevel={activeCertification.level}
+            />
           </div>
         ) : (
           <CertifyButton documentId={document.id} />

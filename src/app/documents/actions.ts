@@ -239,10 +239,10 @@ export async function finalizeNewVersion(formData: FormData): Promise<DocumentAc
 }
 
 /**
- * Certification d'un document : calcule le hash côté serveur à partir du
- * fichier réellement stocké (jamais d'un hash fourni par le client), puis
- * crée l'enregistrement de certification. Utilise le client admin car aucune
- * policy INSERT publique n'existe sur `certifications` (protection par défaut).
+ * Certification (première fois) ou ré-certification à un niveau différent.
+ * L'ancienne certification n'est jamais supprimée — elle passe au statut
+ * "revoked" et reste visible dans l'historique, pour ne pas perdre la valeur
+ * de preuve (quelqu'un a pu vérifier le document avec l'ancien code avant).
  */
 export async function certifyDocument(
   documentId: string,
@@ -257,8 +257,6 @@ export async function certifyDocument(
     redirect("/connexion");
   }
 
-  // Vérifie que l'utilisateur a bien accès à ce document (RLS applique déjà
-  // cette règle, mais on veut un message d'erreur clair si l'accès échoue).
   const { data: document, error: docError } = await supabase
     .from("documents")
     .select("id, storage_path")
@@ -281,6 +279,15 @@ export async function certifyDocument(
   const fileHash = computeSha256(buffer);
 
   const admin = createAdminClient();
+
+  // S'il existe déjà une certification active, on la marque révoquée plutôt
+  // que de la supprimer — elle reste consultable dans l'historique.
+  await admin
+    .from("certifications")
+    .update({ status: "revoked", revoked_at: new Date().toISOString(), revoked_reason: "Remplacée par une certification de niveau supérieur" })
+    .eq("document_id", documentId)
+    .eq("status", "active");
+
   const { error: certError } = await admin.from("certifications").insert({
     document_id: documentId,
     file_hash: fileHash,
