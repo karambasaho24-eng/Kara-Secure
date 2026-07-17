@@ -248,6 +248,17 @@ export async function certifyDocument(
   documentId: string,
   level: "standard" | "renforce" | "professionnel"
 ): Promise<DocumentActionState> {
+  // Défense en profondeur : les niveaux Renforcé/Professionnel impliquent une
+  // vérification par un tiers qui n'existe pas encore. Les autoriser côté
+  // serveur donnerait un badge de confiance non mérité, même si l'interface
+  // les bloque déjà.
+  if (level !== "standard") {
+    return {
+      error:
+        "Ce niveau de certification nécessite une vérification par un tiers, pas encore disponible.",
+    };
+  }
+
   const supabase = await createClient();
   const {
     data: { user },

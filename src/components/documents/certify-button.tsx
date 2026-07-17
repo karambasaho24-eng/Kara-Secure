@@ -4,9 +4,19 @@ import { useState, useTransition } from "react";
 import { certifyDocument } from "@/app/documents/actions";
 
 const levels = [
-  { value: "standard", label: "Standard", description: "Empreinte, date, QR code." },
-  { value: "renforce", label: "Renforcé", description: "+ identité vérifiée." },
-  { value: "professionnel", label: "Professionnel", description: "+ entreprise vérifiée, historique." },
+  { value: "standard", label: "Standard", description: "Empreinte, date, QR code.", locked: false },
+  {
+    value: "renforce",
+    label: "Renforcé",
+    description: "Identité vérifiée par un tiers.",
+    locked: true,
+  },
+  {
+    value: "professionnel",
+    label: "Professionnel",
+    description: "Entreprise vérifiée, historique complet.",
+    locked: true,
+  },
 ] as const;
 
 type Level = (typeof levels)[number]["value"];
@@ -32,9 +42,10 @@ export function CertifyButton({
   const [isPending, startTransition] = useTransition();
 
   const isUpgrade = Boolean(currentLevel);
-  const availableLevels = isUpgrade
+  const upgradeCandidates = isUpgrade
     ? levels.filter((l) => levelOrder.indexOf(l.value) > levelOrder.indexOf(currentLevel!))
     : levels;
+  const hasUnlockedUpgrade = upgradeCandidates.some((l) => !l.locked);
 
   function handleCertify() {
     setError(null);
@@ -46,6 +57,19 @@ export function CertifyButton({
         onDone?.();
       }
     });
+  }
+
+  // En mode amélioration, si le seul niveau supérieur disponible est
+  // verrouillé (pas encore de système de vérification réelle), on le dit
+  // honnêtement plutôt que de laisser un faux choix.
+  if (isUpgrade && !hasUnlockedUpgrade) {
+    return (
+      <div className="rounded-lg border border-neutral-800 bg-neutral-900/50 p-4 text-sm text-neutral-400">
+        🔒 Les niveaux Renforcé et Professionnel nécessitent une vérification par un tiers
+        (organisme, entreprise) — cette fonctionnalité n&apos;est pas encore disponible. Le niveau
+        Standard reste la certification la plus élevée possible pour l&apos;instant.
+      </div>
+    );
   }
 
   return (
@@ -92,11 +116,13 @@ export function CertifyButton({
 
       <p className="text-sm font-medium text-neutral-200">Niveau de certification</p>
       <div className="space-y-2">
-        {availableLevels.map((l) => (
+        {upgradeCandidates.map((l) => (
           <label
             key={l.value}
-            className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition ${
-              level === l.value ? "border-white" : "border-neutral-800"
+            className={`flex items-start gap-3 rounded-lg border p-3 transition ${
+              l.locked
+                ? "cursor-not-allowed border-neutral-900 opacity-50"
+                : "cursor-pointer " + (level === l.value ? "border-white" : "border-neutral-800")
             }`}
           >
             <input
@@ -104,11 +130,19 @@ export function CertifyButton({
               name="level"
               value={l.value}
               checked={level === l.value}
+              disabled={l.locked}
               onChange={() => setLevel(l.value)}
               className="mt-1"
             />
             <span>
-              <span className="block text-sm font-medium text-white">{l.label}</span>
+              <span className="flex items-center gap-2 text-sm font-medium text-white">
+                {l.label}
+                {l.locked && (
+                  <span className="rounded-full bg-neutral-800 px-2 py-0.5 text-[10px] font-normal text-neutral-400">
+                    🔒 Bientôt disponible
+                  </span>
+                )}
+              </span>
               <span className="block text-xs text-neutral-500">{l.description}</span>
             </span>
           </label>
