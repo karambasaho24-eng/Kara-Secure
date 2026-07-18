@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CertificationStory } from "@/components/marketing/certification-story";
 import { Reveal } from "@/components/marketing/reveal";
+import { ShineWrapper } from "@/components/marketing/shine-wrapper";
 import { PublicHeader } from "@/components/layout/public-header";
 import { PublicFooter } from "@/components/layout/public-footer";
 
@@ -64,20 +65,21 @@ export default function Home() {
 
         <div className="flex-1">
           <p
-            className="mb-5 font-mono text-xs uppercase tracking-[0.2em]"
+            className="mb-6 font-mono text-xs uppercase tracking-[0.25em]"
             style={{ color: "var(--color-gold)" }}
           >
             Infrastructure de preuve documentaire
           </p>
           <h1
-            className="font-display text-4xl leading-[1.1] tracking-tight sm:text-5xl"
+            className="font-display text-[15vw] leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl"
             style={{ color: "var(--color-text)" }}
           >
-            Établissez, de façon vérifiable, qu&apos;un document n&apos;a pas été modifié depuis
-            son enregistrement.
+            La preuve
+            <br />
+            <span style={{ color: "var(--color-gold-bright)" }}>qui ne bouge pas.</span>
           </h1>
           <p
-            className="mt-6 max-w-lg text-base leading-relaxed"
+            className="mt-8 max-w-lg text-base leading-relaxed"
             style={{ color: "var(--color-text-muted)" }}
           >
             KARA Secure calcule et conserve l&apos;empreinte cryptographique de chaque document
@@ -136,6 +138,87 @@ export default function Home() {
                   L&apos;exactitude des informations contenues dans le document. Le service
                   atteste l&apos;intégrité d&apos;un fichier, non la véracité de son contenu.
                 </p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Pourquoi KARA Secure existe — panneau en verre dépoli */}
+      <section className="relative overflow-hidden border-t" style={{ borderColor: "var(--color-border)" }}>
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "radial-gradient(ellipse at 30% 20%, rgba(184,147,90,0.08), transparent 60%)",
+          }}
+        />
+        <div className="mx-auto max-w-4xl px-6 py-24">
+          <Reveal>
+            <p
+              className="mb-4 text-center font-mono text-xs uppercase tracking-[0.2em]"
+              style={{ color: "var(--color-gold)" }}
+            >
+              Pourquoi maintenant
+            </p>
+            <h2
+              className="mb-12 text-center font-display text-2xl leading-tight sm:text-4xl"
+              style={{ color: "var(--color-text)" }}
+            >
+              Modifier un document n&apos;a jamais été aussi simple.
+              <br />
+              <span style={{ color: "var(--color-text-muted)" }}>
+                Prouver qu&apos;il n&apos;a pas changé, si.
+              </span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={150}>
+            <div
+              className="rounded-2xl border p-10 backdrop-blur-xl"
+              style={{
+                borderColor: "rgba(255,255,255,0.08)",
+                background:
+                  "linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))",
+              }}
+            >
+              <div className="grid gap-8 sm:grid-cols-3">
+                <div>
+                  <p
+                    className="mb-2 font-mono text-[10px] uppercase tracking-[0.15em]"
+                    style={{ color: "var(--color-warning)" }}
+                  >
+                    Aujourd&apos;hui
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
+                    Un document peut être modifié en quelques secondes, sans laisser de trace
+                    visible.
+                  </p>
+                </div>
+                <div>
+                  <p
+                    className="mb-2 font-mono text-[10px] uppercase tracking-[0.15em]"
+                    style={{ color: "var(--color-gold)" }}
+                  >
+                    Avec KARA Secure
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
+                    Son empreinte est enregistrée au moment T. Toute modification ultérieure
+                    devient détectable.
+                  </p>
+                </div>
+                <div>
+                  <p
+                    className="mb-2 font-mono text-[10px] uppercase tracking-[0.15em]"
+                    style={{ color: "var(--color-verified)" }}
+                  >
+                    À tout moment
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
+                    N&apos;importe qui peut vérifier, sans compte, que le document présenté
+                    correspond à l&apos;original.
+                  </p>
+                </div>
               </div>
             </div>
           </Reveal>
@@ -213,6 +296,7 @@ export default function Home() {
             {levels.map((level, i) => (
               <Reveal key={level.name} delay={i * 150}>
                 <div className="flex flex-col items-center text-center">
+                  <ShineWrapper>
                   <div
                     className="relative flex h-24 w-24 items-center justify-center rounded-full"
                     style={{
@@ -238,6 +322,7 @@ export default function Home() {
                       </span>
                     </div>
                   </div>
+                  </ShineWrapper>
 
                   <h3 className="mt-5 font-display text-lg" style={{ color: "var(--color-text)" }}>
                     {level.name}
