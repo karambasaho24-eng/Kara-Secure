@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { signOut } from "@/app/(auth)/actions";
+import { AppHeader } from "@/components/layout/app-header";
 
 const accountTypeLabels: Record<string, string> = {
   individual: "Particulier",
@@ -27,43 +27,70 @@ export default async function ComptePage() {
     .single();
 
   return (
-    <main className="min-h-screen bg-black px-4 py-12 text-white">
-      <div className="mx-auto max-w-xl">
-        <h1 className="mb-8 text-2xl font-semibold">Mon compte</h1>
+    <main className="min-h-screen" style={{ background: "var(--color-ink)" }}>
+      <AppHeader email={user.email} />
+      <div className="mx-auto max-w-xl px-6 py-12">
+        <p
+          className="mb-1 font-mono text-xs uppercase tracking-[0.2em]"
+          style={{ color: "var(--color-gold)" }}
+        >
+          Espace personnel
+        </p>
+        <h1 className="mb-8 font-display text-2xl" style={{ color: "var(--color-text)" }}>
+          Mon compte
+        </h1>
 
-        <dl className="space-y-4 rounded-lg border border-neutral-800 p-6">
+        <dl
+          className="space-y-5 rounded-xl border p-6"
+          style={{ borderColor: "var(--color-border)", background: "var(--color-ink-soft)" }}
+        >
           <div>
-            <dt className="text-xs uppercase tracking-wide text-neutral-500">Nom</dt>
-            <dd className="text-sm">{profile?.full_name ?? "—"}</dd>
+            <dt
+              className="font-mono text-[10px] uppercase tracking-[0.15em]"
+              style={{ color: "var(--color-text-dim)" }}
+            >
+              Nom
+            </dt>
+            <dd className="mt-1 text-sm" style={{ color: "var(--color-text)" }}>
+              {profile?.full_name ?? "—"}
+            </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase tracking-wide text-neutral-500">Email</dt>
-            <dd className="text-sm">{profile?.email}</dd>
+            <dt
+              className="font-mono text-[10px] uppercase tracking-[0.15em]"
+              style={{ color: "var(--color-text-dim)" }}
+            >
+              Email
+            </dt>
+            <dd className="mt-1 text-sm" style={{ color: "var(--color-text)" }}>
+              {profile?.email}
+            </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase tracking-wide text-neutral-500">Type de compte</dt>
-            <dd className="text-sm">
+            <dt
+              className="font-mono text-[10px] uppercase tracking-[0.15em]"
+              style={{ color: "var(--color-text-dim)" }}
+            >
+              Type de compte
+            </dt>
+            <dd className="mt-1 text-sm" style={{ color: "var(--color-text)" }}>
               {profile?.account_type ? accountTypeLabels[profile.account_type] : "—"}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase tracking-wide text-neutral-500">Membre depuis</dt>
-            <dd className="text-sm">
+            <dt
+              className="font-mono text-[10px] uppercase tracking-[0.15em]"
+              style={{ color: "var(--color-text-dim)" }}
+            >
+              Membre depuis
+            </dt>
+            <dd className="mt-1 text-sm" style={{ color: "var(--color-text)" }}>
               {profile?.created_at
                 ? new Date(profile.created_at).toLocaleDateString("fr-FR")
                 : "—"}
             </dd>
           </div>
         </dl>
-
-        <form action={signOut} className="mt-6">
-          <button
-            type="submit"
-            className="rounded-lg border border-neutral-700 px-4 py-2 text-sm text-neutral-300 transition hover:border-white hover:text-white"
-          >
-            Se déconnecter
-          </button>
-        </form>
       </div>
     </main>
   );

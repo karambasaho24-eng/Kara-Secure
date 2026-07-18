@@ -4,6 +4,7 @@ import { CertifyButton } from "@/components/documents/certify-button";
 import { NewVersionForm } from "@/components/documents/new-version-form";
 import { UpgradeCertificationSection } from "@/components/documents/upgrade-certification-section";
 import { generateVerificationQrCode } from "@/lib/documents/qrcode";
+import { AppHeader } from "@/components/layout/app-header";
 
 const levelLabels: Record<string, string> = {
   standard: "Standard",
@@ -73,8 +74,9 @@ export default async function DocumentDetailPage({
   }[status];
 
   return (
-    <main className="min-h-screen bg-black px-4 py-12 text-white">
-      <div className="mx-auto max-w-2xl space-y-8">
+    <main className="min-h-screen bg-black text-white">
+      <AppHeader email={user.email} />
+      <div className="mx-auto max-w-2xl space-y-8 px-4 py-12">
         {/* Carte d'identité du document */}
         <div className="rounded-xl border border-neutral-800 bg-gradient-to-b from-neutral-900 to-black p-6">
           <div className="mb-4 flex items-start justify-between">

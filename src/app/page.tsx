@@ -1,25 +1,27 @@
 import Link from "next/link";
 import { CertificationStory } from "@/components/marketing/certification-story";
 import { Reveal } from "@/components/marketing/reveal";
+import { PublicHeader } from "@/components/layout/public-header";
+import { PublicFooter } from "@/components/layout/public-footer";
 
 const steps = [
   {
     number: "01",
-    title: "Envoyer le document",
+    title: "Enregistrement du document",
     description:
-      "PDF, photo ou scan — le fichier est stocké de façon chiffrée et privée, jamais accessible publiquement.",
+      "Le fichier (PDF, photo ou scan) est transmis de façon chiffrée et stocké dans un espace strictement privé.",
   },
   {
     number: "02",
-    title: "Créer l'empreinte",
+    title: "Calcul de l'empreinte",
     description:
-      "Une empreinte SHA-256 est calculée côté serveur et associée à un identifiant KARA-ID unique et permanent.",
+      "Une empreinte cryptographique SHA-256 est générée côté serveur et associée à un identifiant KARA-ID unique et permanent.",
   },
   {
     number: "03",
-    title: "Vérifier à tout moment",
+    title: "Vérification indépendante",
     description:
-      "N'importe qui, sans compte, peut scanner le QR code ou entrer l'identifiant pour confirmer que le document n'a pas changé.",
+      "Toute personne, sans compte, peut confirmer par QR code ou identifiant que le document présenté correspond à la version enregistrée.",
   },
 ];
 
@@ -32,24 +34,25 @@ const levels = [
   },
   {
     name: "Renforcé",
-    status: "Bientôt",
+    status: "À venir",
     active: false,
-    description: "Identité du propriétaire confirmée par un tiers vérificateur.",
+    description: "Identité du titulaire confirmée par un tiers vérificateur.",
   },
   {
     name: "Professionnel",
-    status: "Bientôt",
+    status: "À venir",
     active: false,
-    description: "Document validé directement par l'organisme émetteur (entreprise, école…).",
+    description: "Document validé directement par l'organisme émetteur.",
   },
 ];
 
 export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden" style={{ background: "var(--color-ink)" }}>
+      <PublicHeader />
+
       {/* Hero — scène d'ouverture animée */}
-      <section className="relative mx-auto flex max-w-6xl flex-col-reverse items-center gap-16 px-6 pb-24 pt-20 lg:flex-row lg:pt-28">
-        {/* grille de fond subtile */}
+      <section className="relative mx-auto flex max-w-6xl flex-col-reverse items-center gap-16 px-6 pb-24 pt-16 lg:flex-row lg:pt-20">
         <div
           className="pointer-events-none absolute inset-0 -z-10 opacity-[0.03]"
           style={{
@@ -64,21 +67,22 @@ export default function Home() {
             className="mb-5 font-mono text-xs uppercase tracking-[0.2em]"
             style={{ color: "var(--color-gold)" }}
           >
-            Preuve d&apos;intégrité documentaire
+            Infrastructure de preuve documentaire
           </p>
           <h1
             className="font-display text-4xl leading-[1.1] tracking-tight sm:text-5xl"
             style={{ color: "var(--color-text)" }}
           >
-            Un document vulnérable devient une preuve numérique de confiance.
+            Établissez, de façon vérifiable, qu&apos;un document n&apos;a pas été modifié depuis
+            son enregistrement.
           </h1>
           <p
             className="mt-6 max-w-lg text-base leading-relaxed"
             style={{ color: "var(--color-text-muted)" }}
           >
-            KARA Secure enregistre l&apos;empreinte numérique de vos documents et vous donne un
-            moyen simple de vérifier, à tout moment, qu&apos;une copie correspond exactement à la
-            version d&apos;origine.
+            KARA Secure calcule et conserve l&apos;empreinte cryptographique de chaque document
+            certifié, afin d&apos;en garantir l&apos;intégrité et de permettre une vérification
+            indépendante, à tout moment.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-3">
@@ -97,10 +101,6 @@ export default function Home() {
               Vérifier un document
             </Link>
           </div>
-
-          <p className="mt-6 text-xs" style={{ color: "var(--color-text-dim)" }}>
-            Aucune carte bancaire requise pour commencer.
-          </p>
         </div>
 
         <div className="flex flex-1 justify-center lg:justify-end">
@@ -108,7 +108,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ce que KARA Secure fait — et ne fait pas */}
+      {/* Ce que KARA Secure établit — et ce qu'elle n'établit pas */}
       <section className="border-t" style={{ borderColor: "var(--color-border)" }}>
         <div className="mx-auto max-w-4xl px-6 py-16">
           <Reveal>
@@ -120,26 +120,25 @@ export default function Home() {
                 className="mb-4 font-mono text-xs uppercase tracking-[0.2em]"
                 style={{ color: "var(--color-gold)" }}
               >
-                À propos, sans détour
+                Portée du service
               </p>
               <div className="grid gap-8 sm:grid-cols-2">
                 <div>
                   <h3 className="mb-2 font-display text-lg" style={{ color: "var(--color-text)" }}>
-                    Ce que ça prouve
+                    Ce que KARA Secure établit
                   </h3>
                   <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-                    Qu&apos;un fichier précis existait à une date donnée, et qu&apos;il n&apos;a
-                    subi aucune modification depuis son enregistrement sur la plateforme.
+                    Qu&apos;un fichier déterminé existait à une date donnée, et qu&apos;il n&apos;a
+                    subi aucune altération depuis son enregistrement sur la plateforme.
                   </p>
                 </div>
                 <div>
                   <h3 className="mb-2 font-display text-lg" style={{ color: "var(--color-text)" }}>
-                    Ce que ça ne prouve pas
+                    Ce que KARA Secure n&apos;établit pas
                   </h3>
                   <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-                    Que les informations contenues dans le document sont vraies. KARA Secure
-                    n&apos;est pas un juge — c&apos;est une preuve d&apos;intégrité, pas une
-                    enquête.
+                    L&apos;exactitude des informations contenues dans le document. Le service
+                    atteste l&apos;intégrité d&apos;un fichier, non la véracité de son contenu.
                   </p>
                 </div>
               </div>
@@ -152,8 +151,14 @@ export default function Home() {
       <section className="border-t" style={{ borderColor: "var(--color-border)" }}>
         <div className="mx-auto max-w-5xl px-6 py-20">
           <Reveal>
+            <p
+              className="mb-3 font-mono text-xs uppercase tracking-[0.2em]"
+              style={{ color: "var(--color-gold)" }}
+            >
+              Procédure
+            </p>
             <h2 className="mb-12 font-display text-2xl sm:text-3xl" style={{ color: "var(--color-text)" }}>
-              Comment ça marche
+              Trois étapes, de l&apos;enregistrement à la vérification
             </h2>
           </Reveal>
           <div className="grid gap-10 sm:grid-cols-3">
@@ -180,6 +185,12 @@ export default function Home() {
       <section className="border-t" style={{ borderColor: "var(--color-border)" }}>
         <div className="mx-auto max-w-5xl px-6 py-20">
           <Reveal>
+            <p
+              className="mb-3 font-mono text-xs uppercase tracking-[0.2em]"
+              style={{ color: "var(--color-gold)" }}
+            >
+              Niveaux
+            </p>
             <h2 className="mb-12 font-display text-2xl sm:text-3xl" style={{ color: "var(--color-text)" }}>
               Niveaux de certification
             </h2>
@@ -223,41 +234,23 @@ export default function Home() {
         <div className="mx-auto max-w-3xl px-6 py-24 text-center">
           <Reveal>
             <h2 className="mb-4 font-display text-2xl sm:text-3xl" style={{ color: "var(--color-text)" }}>
-              Votre premier document, certifié en quelques minutes.
+              Enregistrez votre premier document.
             </h2>
             <p className="mb-8 text-sm" style={{ color: "var(--color-text-muted)" }}>
-              Gratuit pour commencer.
+              La certification de niveau Standard est disponible sans engagement.
             </p>
             <Link
               href="/inscription"
               className="inline-block rounded-lg px-8 py-3 text-sm font-medium transition hover:opacity-90"
               style={{ background: "var(--color-text)", color: "var(--color-ink)" }}
             >
-              Créer mon compte
+              Créer un compte
             </Link>
           </Reveal>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t" style={{ borderColor: "var(--color-border)" }}>
-        <div
-          className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-xs sm:flex-row"
-          style={{ color: "var(--color-text-dim)" }}
-        >
-          <span className="font-display" style={{ color: "var(--color-text-muted)" }}>
-            KARA Secure
-          </span>
-          <div className="flex gap-6">
-            <Link href="/verifier" className="hover:underline">
-              Vérifier un document
-            </Link>
-            <Link href="/connexion" className="hover:underline">
-              Connexion
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <PublicFooter />
     </main>
   );
 }
