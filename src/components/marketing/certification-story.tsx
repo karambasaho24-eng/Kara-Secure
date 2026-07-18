@@ -160,17 +160,24 @@ export function CertificationStory() {
           </div>
 
           <div
-            className="absolute -bottom-4 -right-4 flex h-20 w-20 items-center justify-center rounded-full border-2 transition-all duration-700"
+            className="absolute -bottom-4 -right-4 flex h-20 w-20 items-center justify-center rounded-full transition-all duration-700"
             style={{
-              borderColor: "var(--color-gold)",
-              background: "var(--color-ink)",
+              background: isAtLeast("sealing") ? "var(--gradient-gold)" : "var(--color-border)",
+              boxShadow: isAtLeast("sealing")
+                ? "0 6px 20px -6px rgba(184,147,90,0.55), inset 0 1px 1px rgba(255,255,255,0.4)"
+                : "none",
               opacity: isAtLeast("sealing") ? 1 : 0,
               transform: isAtLeast("sealing") ? "scale(1) rotate(-10deg)" : "scale(0.5) rotate(-10deg)",
             }}
           >
-            <span className="font-display text-[8px] tracking-wide" style={{ color: "var(--color-gold-bright)" }}>
-              CERTIFIÉ
-            </span>
+            <div
+              className="flex h-[68px] w-[68px] items-center justify-center rounded-full"
+              style={{ background: "var(--color-ink)", border: "1px solid rgba(217,189,134,0.35)" }}
+            >
+              <span className="font-display text-[8px] tracking-wide" style={{ color: "var(--color-gold-bright)" }}>
+                CERTIFIÉ
+              </span>
+            </div>
           </div>
         </div>
 

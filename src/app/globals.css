@@ -6,10 +6,20 @@
   --color-ink-soft: #131313;
   --color-ink-card: #16140f;
 
-  /* Accent de marque — sceau/certification, pas un accent générique */
+  /* Palette acier — casse le "tout noir", évoque la précision industrielle */
+  --color-steel-900: #1c1c1e;
+  --color-steel-700: #3a3a3d;
+  --color-steel-500: #6e6e72;
+  --color-steel-300: #a8a8ac;
+  --color-steel-100: #e4e4e6;
+  --color-paper: #f5f4f1;
+
+  /* Accent de marque — sceau/certification, effet métallique (or) */
   --color-gold: #b8935a;
   --color-gold-bright: #d9bd86;
   --color-gold-dim: rgba(184, 147, 90, 0.12);
+  --gradient-gold: linear-gradient(135deg, #e8cd9a 0%, #b8935a 45%, #8a6a3d 100%);
+  --gradient-steel: linear-gradient(135deg, #c8c8cc 0%, #8a8a8e 45%, #58585c 100%);
 
   /* États sémantiques (réutilisés partout dans l'app) */
   --color-verified: #34d399;

@@ -108,46 +108,41 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ce que KARA Secure établit — et ce qu'elle n'établit pas */}
-      <section className="border-t" style={{ borderColor: "var(--color-border)" }}>
-        <div className="mx-auto max-w-4xl px-6 py-16">
+      {/* Ce que KARA Secure établit — rupture visuelle claire, pas une carte de plus */}
+      <section style={{ background: "var(--color-paper)" }}>
+        <div className="mx-auto max-w-4xl px-6 py-20">
           <Reveal>
-            <div
-              className="rounded-2xl border p-8"
-              style={{ borderColor: "var(--color-border)", background: "var(--color-ink-soft)" }}
+            <p
+              className="mb-8 font-mono text-xs uppercase tracking-[0.2em]"
+              style={{ color: "#8a6a3d" }}
             >
-              <p
-                className="mb-4 font-mono text-xs uppercase tracking-[0.2em]"
-                style={{ color: "var(--color-gold)" }}
-              >
-                Portée du service
-              </p>
-              <div className="grid gap-8 sm:grid-cols-2">
-                <div>
-                  <h3 className="mb-2 font-display text-lg" style={{ color: "var(--color-text)" }}>
-                    Ce que KARA Secure établit
-                  </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-                    Qu&apos;un fichier déterminé existait à une date donnée, et qu&apos;il n&apos;a
-                    subi aucune altération depuis son enregistrement sur la plateforme.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="mb-2 font-display text-lg" style={{ color: "var(--color-text)" }}>
-                    Ce que KARA Secure n&apos;établit pas
-                  </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-                    L&apos;exactitude des informations contenues dans le document. Le service
-                    atteste l&apos;intégrité d&apos;un fichier, non la véracité de son contenu.
-                  </p>
-                </div>
+              Portée du service
+            </p>
+            <div className="grid gap-10 sm:grid-cols-2">
+              <div className="border-l-2 pl-6" style={{ borderColor: "#8a6a3d" }}>
+                <h3 className="mb-2 font-display text-xl" style={{ color: "#141414" }}>
+                  Ce que KARA Secure établit
+                </h3>
+                <p className="text-sm leading-relaxed" style={{ color: "#4a4a4a" }}>
+                  Qu&apos;un fichier déterminé existait à une date donnée, et qu&apos;il n&apos;a
+                  subi aucune altération depuis son enregistrement sur la plateforme.
+                </p>
+              </div>
+              <div className="border-l-2 pl-6" style={{ borderColor: "#c4c4c4" }}>
+                <h3 className="mb-2 font-display text-xl" style={{ color: "#141414" }}>
+                  Ce que KARA Secure n&apos;établit pas
+                </h3>
+                <p className="text-sm leading-relaxed" style={{ color: "#4a4a4a" }}>
+                  L&apos;exactitude des informations contenues dans le document. Le service
+                  atteste l&apos;intégrité d&apos;un fichier, non la véracité de son contenu.
+                </p>
               </div>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* Comment ça marche */}
+      {/* Comment ça marche — frise connectée, pas des cartes répétées */}
       <section className="border-t" style={{ borderColor: "var(--color-border)" }}>
         <div className="mx-auto max-w-5xl px-6 py-20">
           <Reveal>
@@ -157,18 +152,34 @@ export default function Home() {
             >
               Procédure
             </p>
-            <h2 className="mb-12 font-display text-2xl sm:text-3xl" style={{ color: "var(--color-text)" }}>
+            <h2 className="mb-16 font-display text-2xl sm:text-3xl" style={{ color: "var(--color-text)" }}>
               Trois étapes, de l&apos;enregistrement à la vérification
             </h2>
           </Reveal>
-          <div className="grid gap-10 sm:grid-cols-3">
+
+          <div className="relative grid gap-12 sm:grid-cols-3 sm:gap-6">
+            {/* ligne de connexion (desktop uniquement) */}
+            <div
+              className="absolute left-0 right-0 top-[18px] hidden h-px sm:block"
+              style={{
+                background:
+                  "linear-gradient(90deg, var(--color-border), var(--color-gold-dim), var(--color-border))",
+              }}
+            />
             {steps.map((step, i) => (
-              <Reveal key={step.number} delay={i * 120}>
-                <div>
-                  <span className="font-display text-3xl" style={{ color: "var(--color-gold)" }}>
+              <Reveal key={step.number} delay={i * 150}>
+                <div className="relative">
+                  <div
+                    className="mb-5 flex h-9 w-9 items-center justify-center rounded-full font-mono text-xs"
+                    style={{
+                      background: "var(--color-ink)",
+                      border: `1px solid ${i === 0 ? "var(--color-gold)" : "var(--color-border)"}`,
+                      color: i === 0 ? "var(--color-gold-bright)" : "var(--color-text-dim)",
+                    }}
+                  >
                     {step.number}
-                  </span>
-                  <h3 className="mt-3 mb-2 text-base font-medium" style={{ color: "var(--color-text)" }}>
+                  </div>
+                  <h3 className="mb-2 text-base font-medium" style={{ color: "var(--color-text)" }}>
                     {step.title}
                   </h3>
                   <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
@@ -181,45 +192,66 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Niveaux */}
+      {/* Niveaux — médaillons métalliques, pas des cartes bordées */}
       <section className="border-t" style={{ borderColor: "var(--color-border)" }}>
-        <div className="mx-auto max-w-5xl px-6 py-20">
+        <div className="mx-auto max-w-5xl px-6 py-24">
           <Reveal>
             <p
-              className="mb-3 font-mono text-xs uppercase tracking-[0.2em]"
+              className="mb-3 text-center font-mono text-xs uppercase tracking-[0.2em]"
               style={{ color: "var(--color-gold)" }}
             >
               Niveaux
             </p>
-            <h2 className="mb-12 font-display text-2xl sm:text-3xl" style={{ color: "var(--color-text)" }}>
+            <h2
+              className="mb-16 text-center font-display text-2xl sm:text-3xl"
+              style={{ color: "var(--color-text)" }}
+            >
               Niveaux de certification
             </h2>
           </Reveal>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-10 sm:grid-cols-3">
             {levels.map((level, i) => (
-              <Reveal key={level.name} delay={i * 120}>
-                <div
-                  className="h-full rounded-xl border p-6 transition-transform duration-300 hover:-translate-y-1"
-                  style={{
-                    borderColor: level.active ? "var(--color-gold)" : "var(--color-border)",
-                    opacity: level.active ? 1 : 0.6,
-                  }}
-                >
-                  <div className="mb-3 flex items-center justify-between">
-                    <h3 className="font-display text-lg" style={{ color: "var(--color-text)" }}>
-                      {level.name}
-                    </h3>
-                    <span
-                      className="rounded-full px-2 py-0.5 font-mono text-[10px]"
+              <Reveal key={level.name} delay={i * 150}>
+                <div className="flex flex-col items-center text-center">
+                  <div
+                    className="relative flex h-24 w-24 items-center justify-center rounded-full"
+                    style={{
+                      background: level.active ? "var(--gradient-gold)" : "var(--gradient-steel)",
+                      boxShadow: level.active
+                        ? "0 8px 24px -8px rgba(184,147,90,0.5), inset 0 1px 1px rgba(255,255,255,0.4)"
+                        : "0 4px 16px -8px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.25)",
+                      opacity: level.active ? 1 : 0.75,
+                    }}
+                  >
+                    <div
+                      className="flex h-[76px] w-[76px] items-center justify-center rounded-full"
                       style={{
-                        color: level.active ? "var(--color-verified)" : "var(--color-text-dim)",
-                        background: level.active ? "rgba(52,211,153,0.1)" : "var(--color-ink-soft)",
+                        background: "var(--color-ink)",
+                        border: `1px solid ${level.active ? "rgba(217,189,134,0.4)" : "rgba(200,200,204,0.25)"}`,
                       }}
                     >
-                      {level.status}
-                    </span>
+                      <span
+                        className="font-display text-xs tracking-wide"
+                        style={{ color: level.active ? "var(--color-gold-bright)" : "var(--color-steel-300)" }}
+                      >
+                        {i + 1}
+                      </span>
+                    </div>
                   </div>
-                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
+
+                  <h3 className="mt-5 font-display text-lg" style={{ color: "var(--color-text)" }}>
+                    {level.name}
+                  </h3>
+                  <span
+                    className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em]"
+                    style={{ color: level.active ? "var(--color-verified)" : "var(--color-text-dim)" }}
+                  >
+                    {level.status}
+                  </span>
+                  <p
+                    className="mt-3 max-w-[220px] text-sm leading-relaxed"
+                    style={{ color: "var(--color-text-muted)" }}
+                  >
                     {level.description}
                   </p>
                 </div>
