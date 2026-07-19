@@ -62,10 +62,12 @@ export default function Home() {
               Infrastructure de preuve documentaire
             </p>
             <h1
-              className="font-display text-5xl leading-[1.05] tracking-tight sm:text-6xl"
+              className="font-display-hero text-6xl leading-[0.95] sm:text-7xl"
               style={{ color: "var(--color-text)" }}
             >
-              La preuve qui ne bouge pas.
+              La preuve
+              <br />
+              qui ne bouge pas.
             </h1>
             <p
               className="mt-7 max-w-md text-base leading-relaxed"

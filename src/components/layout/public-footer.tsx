@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Wordmark } from "@/components/layout/wordmark";
+import { Mark } from "@/components/layout/wordmark";
 
 export function PublicFooter() {
   return (
@@ -7,7 +7,7 @@ export function PublicFooter() {
       <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <Wordmark />
+            <Mark tone="dark" />
             <p className="mt-3 max-w-xs text-xs leading-relaxed" style={{ color: "var(--color-text-dim)" }}>
               Preuve d&apos;intégrité documentaire. KARA Secure enregistre l&apos;empreinte
               numérique d&apos;un document et permet d&apos;en vérifier l&apos;intégrité dans le

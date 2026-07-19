@@ -35,7 +35,7 @@
   --gradient-gold: linear-gradient(135deg, #5470ea 0%, #3654e0 55%, #2540b0 100%);
   --gradient-steel: linear-gradient(135deg, #e2e2e4 0%, #c4c4c7 50%, #a6a6aa 100%);
 
-  --font-display: "IBM Plex Serif", Georgia, serif;
+  --font-display: "Oswald", "Arial Narrow", sans-serif;
   --font-body: "IBM Plex Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
@@ -53,6 +53,14 @@ body {
 
 .font-display {
   font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.font-display-hero {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
 }
 
 .font-mono {
