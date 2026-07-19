@@ -22,7 +22,7 @@ export function UpgradeCertificationSection({
     return (
       <button
         onClick={() => setOpen(true)}
-        className="text-sm text-neutral-400 underline underline-offset-2 hover:text-white"
+        className="text-sm text-neutral-500 underline underline-offset-2 hover:text-neutral-900"
       >
         Améliorer le niveau de certification
       </button>

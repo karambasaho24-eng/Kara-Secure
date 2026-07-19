@@ -5,7 +5,7 @@ export function PublicHeader() {
   return (
     <header
       className="sticky top-0 z-50 border-b backdrop-blur"
-      style={{ borderColor: "var(--color-border)", background: "rgba(10,10,10,0.85)" }}
+      style={{ borderColor: "var(--color-border)", background: "rgba(250,250,250,0.85)" }}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Wordmark />
@@ -29,7 +29,7 @@ export function PublicHeader() {
           <Link
             href="/inscription"
             className="rounded-md px-4 py-2 text-xs font-medium"
-            style={{ background: "var(--color-text)", color: "var(--color-ink)" }}
+            style={{ background: "var(--color-text)", color: "var(--color-bg)" }}
           >
             Créer un compte
           </Link>

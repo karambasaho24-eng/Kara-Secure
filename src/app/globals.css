@@ -1,35 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  /* Fond */
-  --color-ink: #0a0a0a;
-  --color-ink-soft: #131313;
-  --color-ink-card: #16140f;
+  /* Fond — clair, minimaliste */
+  --color-bg: #fafafa;
+  --color-bg-alt: #f1f1f2;
+  --color-surface: #ffffff;
 
-  /* Palette acier — casse le "tout noir", évoque la précision industrielle */
-  --color-steel-900: #1c1c1e;
-  --color-steel-700: #3a3a3d;
-  --color-steel-500: #6e6e72;
-  --color-steel-300: #a8a8ac;
-  --color-steel-100: #e4e4e6;
-  --color-paper: #f5f4f1;
+  /* Bordures et gris */
+  --color-border: #e5e5e7;
+  --color-border-strong: #d4d4d6;
 
-  /* Accent de marque — sceau/certification, effet métallique (or) */
-  --color-gold: #b8935a;
-  --color-gold-bright: #d9bd86;
-  --color-gold-dim: rgba(184, 147, 90, 0.12);
-  --gradient-gold: linear-gradient(135deg, #e8cd9a 0%, #b8935a 45%, #8a6a3d 100%);
-  --gradient-steel: linear-gradient(135deg, #c8c8cc 0%, #8a8a8e 45%, #58585c 100%);
+  /* Accent unique, sobre — utilisé avec parcimonie */
+  --color-accent: #3654e0;
+  --color-accent-soft: rgba(54, 84, 224, 0.08);
 
-  /* États sémantiques (réutilisés partout dans l'app) */
-  --color-verified: #34d399;
-  --color-warning: #fb923c;
+  /* États sémantiques */
+  --color-verified: #1a9e6e;
+  --color-verified-soft: rgba(26, 158, 110, 0.08);
+  --color-warning: #c2650a;
+  --color-warning-soft: rgba(194, 101, 10, 0.08);
 
   /* Texte */
-  --color-text: #f5f5f4;
-  --color-text-muted: #9c9c9c;
-  --color-text-dim: #6b6b6b;
-  --color-border: #262626;
+  --color-text: #0a0a0a;
+  --color-text-muted: #5c5c5e;
+  --color-text-dim: #8a8a8d;
+
+  /* Alias de compatibilité avec l'ancien thème sombre (composants pas encore migrés) */
+  --color-ink: var(--color-bg);
+  --color-ink-soft: var(--color-bg-alt);
+  --color-ink-card: var(--color-surface);
+  --color-gold: var(--color-accent);
+  --color-gold-bright: var(--color-accent);
+  --color-gold-dim: var(--color-accent-soft);
+  --gradient-gold: linear-gradient(135deg, #5470ea 0%, #3654e0 55%, #2540b0 100%);
+  --gradient-steel: linear-gradient(135deg, #e2e2e4 0%, #c4c4c7 50%, #a6a6aa 100%);
 
   --font-display: "IBM Plex Serif", Georgia, serif;
   --font-body: "IBM Plex Sans", system-ui, sans-serif;
@@ -37,12 +41,12 @@
 }
 
 @theme inline {
-  --color-background: var(--color-ink);
+  --color-background: var(--color-bg);
   --color-foreground: var(--color-text);
 }
 
 body {
-  background: var(--color-ink);
+  background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
 }

@@ -10,6 +10,6 @@ export async function generateVerificationQrCode(publicCode: string): Promise<st
   return QRCode.toDataURL(url, {
     width: 240,
     margin: 1,
-    color: { dark: "#ffffff", light: "#00000000" },
+    color: { dark: "#0a0a0a", light: "#ffffff" },
   });
 }

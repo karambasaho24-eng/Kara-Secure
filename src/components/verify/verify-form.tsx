@@ -30,7 +30,7 @@ export function VerifyForm({ initialCode }: { initialCode?: string }) {
           value={code}
           onChange={(e) => setCode(e.target.value)}
           placeholder="Identifiant KARA (ex: KS-2026-849291)"
-          className="flex-1 rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2.5 text-white outline-none focus:border-white"
+          className="flex-1 rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 outline-none focus:border-neutral-900"
         />
         <button
           type="submit"
@@ -50,22 +50,22 @@ export function VerifyForm({ initialCode }: { initialCode?: string }) {
           }`}
         >
           {!result.found ? (
-            <p className="text-sm text-red-400">
+            <p className="text-sm text-red-600">
               {result.error ?? "Document introuvable."}
             </p>
           ) : (
             <div className="space-y-3">
-              <p className="text-sm font-medium text-emerald-400">✓ Document trouvé</p>
+              <p className="text-sm font-medium text-emerald-600">✓ Document trouvé</p>
               <dl className="space-y-2 text-sm">
                 <div>
                   <dt className="text-xs uppercase tracking-wide text-neutral-500">KARA-ID</dt>
-                  <dd className="font-mono text-neutral-200">{result.karaId}</dd>
+                  <dd className="font-mono text-neutral-700">{result.karaId}</dd>
                 </div>
                 <div>
                   <dt className="text-xs uppercase tracking-wide text-neutral-500">
                     Niveau de certification
                   </dt>
-                  <dd className="text-neutral-200">
+                  <dd className="text-neutral-700">
                     {result.level ? levelLabels[result.level] : "—"}
                   </dd>
                 </div>
@@ -73,7 +73,7 @@ export function VerifyForm({ initialCode }: { initialCode?: string }) {
                   <dt className="text-xs uppercase tracking-wide text-neutral-500">
                     Certifié le
                   </dt>
-                  <dd className="text-neutral-200">
+                  <dd className="text-neutral-700">
                     {result.certifiedAt
                       ? new Date(result.certifiedAt).toLocaleString("fr-FR")
                       : "—"}
@@ -83,7 +83,7 @@ export function VerifyForm({ initialCode }: { initialCode?: string }) {
                   <dt className="text-xs uppercase tracking-wide text-neutral-500">
                     Intégrité
                   </dt>
-                  <dd className={result.integrityOk ? "text-emerald-400" : "text-orange-400"}>
+                  <dd className={result.integrityOk ? "text-emerald-600" : "text-orange-600"}>
                     {result.integrityOk
                       ? "Aucune modification détectée depuis la certification"
                       : "⚠ Le document a été modifié depuis la certification"}
@@ -91,13 +91,13 @@ export function VerifyForm({ initialCode }: { initialCode?: string }) {
                 </div>
                 <div>
                   <dt className="text-xs uppercase tracking-wide text-neutral-500">Statut</dt>
-                  <dd className={result.status === "active" ? "text-emerald-400" : "text-red-400"}>
+                  <dd className={result.status === "active" ? "text-emerald-600" : "text-red-600"}>
                     {result.status === "active" ? "Actif" : "Révoqué"}
                   </dd>
                 </div>
               </dl>
 
-              <div className="border-t border-neutral-800 pt-4">
+              <div className="border-t border-neutral-200 pt-4">
                 <VerifyByFile code={code} />
               </div>
             </div>

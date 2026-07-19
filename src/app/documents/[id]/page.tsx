@@ -68,17 +68,17 @@ export default async function DocumentDetailPage({
   }
 
   const statusConfig = {
-    valide: { emoji: "🟢", label: "Document valide", color: "text-emerald-400" },
-    modifie: { emoji: "🟠", label: "Document modifié depuis la certification", color: "text-orange-400" },
+    valide: { emoji: "🟢", label: "Document valide", color: "text-emerald-600" },
+    modifie: { emoji: "🟠", label: "Document modifié depuis la certification", color: "text-orange-600" },
     non_certifie: { emoji: "⚪", label: "Non certifié", color: "text-neutral-400" },
   }[status];
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-white text-neutral-900">
       <AppHeader email={user.email} />
       <div className="mx-auto max-w-2xl space-y-8 px-4 py-12">
         {/* Carte d'identité du document */}
-        <div className="rounded-xl border border-neutral-800 bg-gradient-to-b from-neutral-900 to-black p-6">
+        <div className="rounded-xl border border-neutral-200 bg-gradient-to-b from-neutral-50 to-white p-6">
           <div className="mb-4 flex items-start justify-between">
             <div>
               <p className="text-xs uppercase tracking-wide text-neutral-500">Carte d&apos;identité KARA</p>
@@ -92,21 +92,21 @@ export default async function DocumentDetailPage({
           <dl className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <dt className="text-xs uppercase tracking-wide text-neutral-500">KARA-ID</dt>
-              <dd className="font-mono text-neutral-200">{document.kara_id}</dd>
+              <dd className="font-mono text-neutral-800">{document.kara_id}</dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-wide text-neutral-500">Type</dt>
-              <dd className="text-neutral-200">{document.mime_type}</dd>
+              <dd className="text-neutral-800">{document.mime_type}</dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-wide text-neutral-500">Créé le</dt>
-              <dd className="text-neutral-200">
+              <dd className="text-neutral-800">
                 {new Date(document.created_at).toLocaleDateString("fr-FR")}
               </dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-wide text-neutral-500">Version actuelle</dt>
-              <dd className="text-neutral-200">v{latestVersion?.version_number ?? 1}</dd>
+              <dd className="text-neutral-800">v{latestVersion?.version_number ?? 1}</dd>
             </div>
           </dl>
         </div>
@@ -124,7 +124,7 @@ export default async function DocumentDetailPage({
           <div className="space-y-4 rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-3">
-                <p className="text-sm font-medium text-emerald-400">
+                <p className="text-sm font-medium text-emerald-600">
                   ✓ Certifié — Niveau {levelLabels[activeCertification.level]}
                 </p>
                 <dl className="space-y-2 text-sm">
@@ -132,7 +132,7 @@ export default async function DocumentDetailPage({
                     <dt className="text-xs uppercase tracking-wide text-neutral-500">
                       Identifiant de certification
                     </dt>
-                    <dd className="font-mono text-neutral-300">{activeCertification.public_code}</dd>
+                    <dd className="font-mono text-neutral-700">{activeCertification.public_code}</dd>
                   </div>
                   <div>
                     <dt className="text-xs uppercase tracking-wide text-neutral-500">
@@ -144,7 +144,7 @@ export default async function DocumentDetailPage({
                   </div>
                   <div>
                     <dt className="text-xs uppercase tracking-wide text-neutral-500">Date</dt>
-                    <dd className="text-neutral-300">
+                    <dd className="text-neutral-700">
                       {new Date(activeCertification.certified_at).toLocaleString("fr-FR")}
                     </dd>
                   </div>
@@ -170,8 +170,8 @@ export default async function DocumentDetailPage({
         {/* Historique / timeline */}
         {versions && versions.length > 0 && (
           <div className="space-y-3">
-            <h2 className="text-sm font-medium text-neutral-200">Historique</h2>
-            <ol className="space-y-3 border-l border-neutral-800 pl-4">
+            <h2 className="text-sm font-medium text-neutral-800">Historique</h2>
+            <ol className="space-y-3 border-l border-neutral-200 pl-4">
               {versions.map((v) => {
                 const versionIsPending = v.pending_until
                   ? new Date(v.pending_until) > new Date()
@@ -179,11 +179,11 @@ export default async function DocumentDetailPage({
                 return (
                   <li key={v.id} className="relative">
                     <span className="absolute -left-[21px] top-1 h-2 w-2 rounded-full bg-neutral-600" />
-                    <p className="text-sm text-neutral-300">
+                    <p className="text-sm text-neutral-700">
                       Version {v.version_number}
                       {v.version_number === 1 ? " — Création initiale" : ""}
                       {versionIsPending && (
-                        <span className="ml-2 rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] text-amber-400">
+                        <span className="ml-2 rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] text-amber-600">
                           En observation
                         </span>
                       )}
@@ -203,7 +203,7 @@ export default async function DocumentDetailPage({
 
         {/* Nouvelle version */}
         <div className="space-y-3">
-          <h2 className="text-sm font-medium text-neutral-200">Ajouter une nouvelle version</h2>
+          <h2 className="text-sm font-medium text-neutral-800">Ajouter une nouvelle version</h2>
           <NewVersionForm documentId={document.id} />
         </div>
       </div>

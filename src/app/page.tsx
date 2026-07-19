@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { CertificationStory } from "@/components/marketing/certification-story";
 import { Reveal } from "@/components/marketing/reveal";
-import { ShineWrapper } from "@/components/marketing/shine-wrapper";
 import { PublicHeader } from "@/components/layout/public-header";
 import { PublicFooter } from "@/components/layout/public-footer";
 
@@ -49,92 +48,81 @@ const levels = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-hidden" style={{ background: "var(--color-ink)" }}>
+    <main className="min-h-screen" style={{ background: "var(--color-bg)" }}>
       <PublicHeader />
 
-      {/* Hero — scène d'ouverture animée */}
-      <section className="relative mx-auto flex max-w-6xl flex-col-reverse items-center gap-16 px-6 pb-24 pt-16 lg:flex-row lg:pt-20">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(var(--color-text) 1px, transparent 1px), linear-gradient(90deg, var(--color-text) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-
-        <div className="flex-1">
-          <p
-            className="mb-6 font-mono text-xs uppercase tracking-[0.25em]"
-            style={{ color: "var(--color-gold)" }}
-          >
-            Infrastructure de preuve documentaire
-          </p>
-          <h1
-            className="font-display text-[15vw] leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl"
-            style={{ color: "var(--color-text)" }}
-          >
-            La preuve
-            <br />
-            <span style={{ color: "var(--color-gold-bright)" }}>qui ne bouge pas.</span>
-          </h1>
-          <p
-            className="mt-8 max-w-lg text-base leading-relaxed"
-            style={{ color: "var(--color-text-muted)" }}
-          >
-            KARA Secure calcule et conserve l&apos;empreinte cryptographique de chaque document
-            certifié, afin d&apos;en garantir l&apos;intégrité et de permettre une vérification
-            indépendante, à tout moment.
-          </p>
-
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Link
-              href="/inscription"
-              className="rounded-lg px-6 py-3 text-sm font-medium transition hover:opacity-90"
-              style={{ background: "var(--color-text)", color: "var(--color-ink)" }}
+      {/* Hero */}
+      <section className="mx-auto max-w-6xl px-6 pb-20 pt-20 lg:pt-28">
+        <div className="grid items-center gap-16 lg:grid-cols-2">
+          <div>
+            <p
+              className="mb-6 font-mono text-xs uppercase tracking-[0.2em]"
+              style={{ color: "var(--color-accent)" }}
             >
-              Certifier un document
-            </Link>
-            <Link
-              href="/verifier"
-              className="rounded-lg border px-6 py-3 text-sm font-medium transition hover:border-neutral-500"
-              style={{ borderColor: "var(--color-border)", color: "var(--color-text)" }}
+              Infrastructure de preuve documentaire
+            </p>
+            <h1
+              className="font-display text-5xl leading-[1.05] tracking-tight sm:text-6xl"
+              style={{ color: "var(--color-text)" }}
             >
-              Vérifier un document
-            </Link>
+              La preuve qui ne bouge pas.
+            </h1>
+            <p
+              className="mt-7 max-w-md text-base leading-relaxed"
+              style={{ color: "var(--color-text-muted)" }}
+            >
+              KARA Secure calcule et conserve l&apos;empreinte cryptographique de chaque document
+              certifié, afin d&apos;en garantir l&apos;intégrité et de permettre une vérification
+              indépendante, à tout moment.
+            </p>
+
+            <div className="mt-9 flex flex-wrap gap-3">
+              <Link
+                href="/inscription"
+                className="rounded-lg px-6 py-3 text-sm font-medium transition hover:opacity-90"
+                style={{ background: "var(--color-text)", color: "var(--color-bg)" }}
+              >
+                Certifier un document
+              </Link>
+              <Link
+                href="/verifier"
+                className="rounded-lg border px-6 py-3 text-sm font-medium transition"
+                style={{ borderColor: "var(--color-border-strong)", color: "var(--color-text)" }}
+              >
+                Vérifier un document
+              </Link>
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-1 justify-center lg:justify-end">
           <CertificationStory />
         </div>
       </section>
 
-      {/* Ce que KARA Secure établit — rupture visuelle claire, pas une carte de plus */}
-      <section style={{ background: "var(--color-paper)" }}>
-        <div className="mx-auto max-w-4xl px-6 py-20">
+      {/* Ce que KARA Secure établit — et ce qu'elle n'établit pas */}
+      <section className="border-t" style={{ borderColor: "var(--color-border)" }}>
+        <div className="mx-auto max-w-4xl px-6 py-16">
           <Reveal>
             <p
               className="mb-8 font-mono text-xs uppercase tracking-[0.2em]"
-              style={{ color: "#8a6a3d" }}
+              style={{ color: "var(--color-accent)" }}
             >
               Portée du service
             </p>
             <div className="grid gap-10 sm:grid-cols-2">
-              <div className="border-l-2 pl-6" style={{ borderColor: "#8a6a3d" }}>
-                <h3 className="mb-2 font-display text-xl" style={{ color: "#141414" }}>
+              <div className="border-l-2 pl-6" style={{ borderColor: "var(--color-text)" }}>
+                <h3 className="mb-2 font-display text-xl" style={{ color: "var(--color-text)" }}>
                   Ce que KARA Secure établit
                 </h3>
-                <p className="text-sm leading-relaxed" style={{ color: "#4a4a4a" }}>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
                   Qu&apos;un fichier déterminé existait à une date donnée, et qu&apos;il n&apos;a
                   subi aucune altération depuis son enregistrement sur la plateforme.
                 </p>
               </div>
-              <div className="border-l-2 pl-6" style={{ borderColor: "#c4c4c4" }}>
-                <h3 className="mb-2 font-display text-xl" style={{ color: "#141414" }}>
+              <div className="border-l-2 pl-6" style={{ borderColor: "var(--color-border-strong)" }}>
+                <h3 className="mb-2 font-display text-xl" style={{ color: "var(--color-text)" }}>
                   Ce que KARA Secure n&apos;établit pas
                 </h3>
-                <p className="text-sm leading-relaxed" style={{ color: "#4a4a4a" }}>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
                   L&apos;exactitude des informations contenues dans le document. Le service
                   atteste l&apos;intégrité d&apos;un fichier, non la véracité de son contenu.
                 </p>
@@ -144,94 +132,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pourquoi KARA Secure existe — panneau en verre dépoli */}
-      <section className="relative overflow-hidden border-t" style={{ borderColor: "var(--color-border)" }}>
-        <div
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(ellipse at 30% 20%, rgba(184,147,90,0.08), transparent 60%)",
-          }}
-        />
-        <div className="mx-auto max-w-4xl px-6 py-24">
-          <Reveal>
-            <p
-              className="mb-4 text-center font-mono text-xs uppercase tracking-[0.2em]"
-              style={{ color: "var(--color-gold)" }}
-            >
-              Pourquoi maintenant
-            </p>
-            <h2
-              className="mb-12 text-center font-display text-2xl leading-tight sm:text-4xl"
-              style={{ color: "var(--color-text)" }}
-            >
-              Modifier un document n&apos;a jamais été aussi simple.
-              <br />
-              <span style={{ color: "var(--color-text-muted)" }}>
-                Prouver qu&apos;il n&apos;a pas changé, si.
-              </span>
-            </h2>
-          </Reveal>
-
-          <Reveal delay={150}>
-            <div
-              className="rounded-2xl border p-10 backdrop-blur-xl"
-              style={{
-                borderColor: "rgba(255,255,255,0.08)",
-                background:
-                  "linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))",
-              }}
-            >
-              <div className="grid gap-8 sm:grid-cols-3">
-                <div>
-                  <p
-                    className="mb-2 font-mono text-[10px] uppercase tracking-[0.15em]"
-                    style={{ color: "var(--color-warning)" }}
-                  >
-                    Aujourd&apos;hui
-                  </p>
-                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-                    Un document peut être modifié en quelques secondes, sans laisser de trace
-                    visible.
-                  </p>
-                </div>
-                <div>
-                  <p
-                    className="mb-2 font-mono text-[10px] uppercase tracking-[0.15em]"
-                    style={{ color: "var(--color-gold)" }}
-                  >
-                    Avec KARA Secure
-                  </p>
-                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-                    Son empreinte est enregistrée au moment T. Toute modification ultérieure
-                    devient détectable.
-                  </p>
-                </div>
-                <div>
-                  <p
-                    className="mb-2 font-mono text-[10px] uppercase tracking-[0.15em]"
-                    style={{ color: "var(--color-verified)" }}
-                  >
-                    À tout moment
-                  </p>
-                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-                    N&apos;importe qui peut vérifier, sans compte, que le document présenté
-                    correspond à l&apos;original.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Comment ça marche — frise connectée, pas des cartes répétées */}
-      <section className="border-t" style={{ borderColor: "var(--color-border)" }}>
+      {/* Comment ça marche */}
+      <section className="border-t" style={{ borderColor: "var(--color-border)", background: "var(--color-bg-alt)" }}>
         <div className="mx-auto max-w-5xl px-6 py-20">
           <Reveal>
             <p
               className="mb-3 font-mono text-xs uppercase tracking-[0.2em]"
-              style={{ color: "var(--color-gold)" }}
+              style={{ color: "var(--color-accent)" }}
             >
               Procédure
             </p>
@@ -241,13 +148,9 @@ export default function Home() {
           </Reveal>
 
           <div className="relative grid gap-12 sm:grid-cols-3 sm:gap-6">
-            {/* ligne de connexion (desktop uniquement) */}
             <div
               className="absolute left-0 right-0 top-[18px] hidden h-px sm:block"
-              style={{
-                background:
-                  "linear-gradient(90deg, var(--color-border), var(--color-gold-dim), var(--color-border))",
-              }}
+              style={{ background: "var(--color-border-strong)" }}
             />
             {steps.map((step, i) => (
               <Reveal key={step.number} delay={i * 150}>
@@ -255,9 +158,9 @@ export default function Home() {
                   <div
                     className="mb-5 flex h-9 w-9 items-center justify-center rounded-full font-mono text-xs"
                     style={{
-                      background: "var(--color-ink)",
-                      border: `1px solid ${i === 0 ? "var(--color-gold)" : "var(--color-border)"}`,
-                      color: i === 0 ? "var(--color-gold-bright)" : "var(--color-text-dim)",
+                      background: "var(--color-surface)",
+                      border: `1px solid ${i === 0 ? "var(--color-accent)" : "var(--color-border-strong)"}`,
+                      color: i === 0 ? "var(--color-accent)" : "var(--color-text-dim)",
                     }}
                   >
                     {step.number}
@@ -275,13 +178,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Niveaux — médaillons métalliques, pas des cartes bordées */}
+      {/* Niveaux */}
       <section className="border-t" style={{ borderColor: "var(--color-border)" }}>
         <div className="mx-auto max-w-5xl px-6 py-24">
           <Reveal>
             <p
               className="mb-3 text-center font-mono text-xs uppercase tracking-[0.2em]"
-              style={{ color: "var(--color-gold)" }}
+              style={{ color: "var(--color-accent)" }}
             >
               Niveaux
             </p>
@@ -292,51 +195,31 @@ export default function Home() {
               Niveaux de certification
             </h2>
           </Reveal>
-          <div className="grid gap-10 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-3">
             {levels.map((level, i) => (
-              <Reveal key={level.name} delay={i * 150}>
-                <div className="flex flex-col items-center text-center">
-                  <ShineWrapper>
-                  <div
-                    className="relative flex h-24 w-24 items-center justify-center rounded-full"
-                    style={{
-                      background: level.active ? "var(--gradient-gold)" : "var(--gradient-steel)",
-                      boxShadow: level.active
-                        ? "0 8px 24px -8px rgba(184,147,90,0.5), inset 0 1px 1px rgba(255,255,255,0.4)"
-                        : "0 4px 16px -8px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.25)",
-                      opacity: level.active ? 1 : 0.75,
-                    }}
-                  >
-                    <div
-                      className="flex h-[76px] w-[76px] items-center justify-center rounded-full"
+              <Reveal key={level.name} delay={i * 120}>
+                <div
+                  className="h-full rounded-xl border p-6"
+                  style={{
+                    borderColor: level.active ? "var(--color-text)" : "var(--color-border)",
+                    background: "var(--color-surface)",
+                  }}
+                >
+                  <div className="mb-3 flex items-center justify-between">
+                    <h3 className="font-display text-lg" style={{ color: "var(--color-text)" }}>
+                      {level.name}
+                    </h3>
+                    <span
+                      className="rounded-full px-2 py-0.5 font-mono text-[10px]"
                       style={{
-                        background: "var(--color-ink)",
-                        border: `1px solid ${level.active ? "rgba(217,189,134,0.4)" : "rgba(200,200,204,0.25)"}`,
+                        color: level.active ? "var(--color-verified)" : "var(--color-text-dim)",
+                        background: level.active ? "var(--color-verified-soft)" : "var(--color-bg-alt)",
                       }}
                     >
-                      <span
-                        className="font-display text-xs tracking-wide"
-                        style={{ color: level.active ? "var(--color-gold-bright)" : "var(--color-steel-300)" }}
-                      >
-                        {i + 1}
-                      </span>
-                    </div>
+                      {level.status}
+                    </span>
                   </div>
-                  </ShineWrapper>
-
-                  <h3 className="mt-5 font-display text-lg" style={{ color: "var(--color-text)" }}>
-                    {level.name}
-                  </h3>
-                  <span
-                    className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em]"
-                    style={{ color: level.active ? "var(--color-verified)" : "var(--color-text-dim)" }}
-                  >
-                    {level.status}
-                  </span>
-                  <p
-                    className="mt-3 max-w-[220px] text-sm leading-relaxed"
-                    style={{ color: "var(--color-text-muted)" }}
-                  >
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
                     {level.description}
                   </p>
                 </div>
@@ -347,7 +230,7 @@ export default function Home() {
       </section>
 
       {/* CTA final */}
-      <section className="border-t" style={{ borderColor: "var(--color-border)" }}>
+      <section className="border-t" style={{ borderColor: "var(--color-border)", background: "var(--color-bg-alt)" }}>
         <div className="mx-auto max-w-3xl px-6 py-24 text-center">
           <Reveal>
             <h2 className="mb-4 font-display text-2xl sm:text-3xl" style={{ color: "var(--color-text)" }}>
@@ -359,7 +242,7 @@ export default function Home() {
             <Link
               href="/inscription"
               className="inline-block rounded-lg px-8 py-3 text-sm font-medium transition hover:opacity-90"
-              style={{ background: "var(--color-text)", color: "var(--color-ink)" }}
+              style={{ background: "var(--color-text)", color: "var(--color-bg)" }}
             >
               Créer un compte
             </Link>

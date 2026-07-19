@@ -64,7 +64,7 @@ export function CertifyButton({
   // honnêtement plutôt que de laisser un faux choix.
   if (isUpgrade && !hasUnlockedUpgrade) {
     return (
-      <div className="rounded-lg border border-neutral-800 bg-neutral-900/50 p-4 text-sm text-neutral-400">
+      <div className="rounded-lg border border-neutral-200 bg-white/50 p-4 text-sm text-neutral-500">
         🔒 Les niveaux Renforcé et Professionnel nécessitent une vérification par un tiers
         (organisme, entreprise) — cette fonctionnalité n&apos;est pas encore disponible. Le niveau
         Standard reste la certification la plus élevée possible pour l&apos;instant.
@@ -73,17 +73,17 @@ export function CertifyButton({
   }
 
   return (
-    <div className="space-y-5 rounded-xl border border-neutral-800 bg-gradient-to-b from-neutral-900 to-black p-6">
+    <div className="space-y-5 rounded-xl border border-neutral-200 bg-gradient-to-b from-neutral-50 to-white p-6">
       <div>
-        <p className="text-xs uppercase tracking-wide text-amber-400/80">Avant de continuer</p>
-        <h3 className="mt-1 text-base font-semibold text-white">
+        <p className="text-xs uppercase tracking-wide text-amber-600/80">Avant de continuer</p>
+        <h3 className="mt-1 text-base font-semibold text-neutral-900">
           {isUpgrade
             ? "Vous êtes sur le point de renforcer le niveau de certification"
             : "Vous êtes sur le point de créer l'identité numérique de ce document"}
         </h3>
       </div>
 
-      <div className="space-y-3 rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-neutral-300">
+      <div className="space-y-3 rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-neutral-600">
         {isUpgrade ? (
           <p>
             L&apos;ancienne certification (niveau {levelLabelOf(currentLevel!)}) sera marquée comme
@@ -91,12 +91,12 @@ export function CertifyButton({
           </p>
         ) : (
           <p>
-            Cette action attribue à ce document un <strong className="text-white">KARA-ID permanent</strong> et
+            Cette action attribue à ce document un <strong className="text-neutral-900">KARA-ID permanent</strong> et
             enregistre son empreinte numérique. Vérifiez avant de continuer que :
           </p>
         )}
         {!isUpgrade && (
-          <ul className="ml-4 list-disc space-y-1 text-neutral-400">
+          <ul className="ml-4 list-disc space-y-1 text-neutral-500">
             <li>c&apos;est bien le bon fichier (pas un brouillon ou une version test) ;</li>
             <li>
               le contenu est correct — une erreur détectée après coup demandera une nouvelle version
@@ -114,7 +114,7 @@ export function CertifyButton({
         </p>
       </div>
 
-      <p className="text-sm font-medium text-neutral-200">Niveau de certification</p>
+      <p className="text-sm font-medium text-neutral-700">Niveau de certification</p>
       <div className="space-y-2">
         {upgradeCandidates.map((l) => (
           <label
@@ -122,7 +122,7 @@ export function CertifyButton({
             className={`flex items-start gap-3 rounded-lg border p-3 transition ${
               l.locked
                 ? "cursor-not-allowed border-neutral-900 opacity-50"
-                : "cursor-pointer " + (level === l.value ? "border-white" : "border-neutral-800")
+                : "cursor-pointer " + (level === l.value ? "border-neutral-900" : "border-neutral-200")
             }`}
           >
             <input
@@ -135,10 +135,10 @@ export function CertifyButton({
               className="mt-1"
             />
             <span>
-              <span className="flex items-center gap-2 text-sm font-medium text-white">
+              <span className="flex items-center gap-2 text-sm font-medium text-neutral-900">
                 {l.label}
                 {l.locked && (
-                  <span className="rounded-full bg-neutral-800 px-2 py-0.5 text-[10px] font-normal text-neutral-400">
+                  <span className="rounded-full bg-neutral-200 px-2 py-0.5 text-[10px] font-normal text-neutral-600">
                     🔒 Bientôt disponible
                   </span>
                 )}
@@ -149,7 +149,7 @@ export function CertifyButton({
         ))}
       </div>
 
-      <label className="flex cursor-pointer items-start gap-3 text-sm text-neutral-300">
+      <label className="flex cursor-pointer items-start gap-3 text-sm text-neutral-600">
         <input
           type="checkbox"
           checked={consentChecked}
@@ -162,12 +162,12 @@ export function CertifyButton({
         </span>
       </label>
 
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       <button
         onClick={handleCertify}
         disabled={isPending || !consentChecked}
-        className="w-full rounded-lg bg-white py-2.5 font-medium text-black transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-40"
+        className="w-full rounded-lg bg-neutral-900 py-2.5 font-medium text-white transition hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-40"
       >
         {isPending
           ? "Certification en cours…"

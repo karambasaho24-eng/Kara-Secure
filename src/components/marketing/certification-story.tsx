@@ -77,19 +77,13 @@ export function CertificationStory() {
   return (
     <div className="relative mx-auto w-full max-w-[380px]">
       <div
-        className="pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl transition-opacity duration-1000"
-        style={{
-          background: "radial-gradient(circle, rgba(184,147,90,0.18) 0%, transparent 70%)",
-          opacity: isAtLeast("sealing") ? 1 : 0.3,
-        }}
-      />
-
-      <div
         className="relative rounded-2xl border p-6 transition-all duration-700"
         style={{
-          borderColor: isAtLeast("sealing") ? "var(--color-gold)" : "var(--color-border)",
-          background: "linear-gradient(160deg, var(--color-ink-card), var(--color-ink))",
-          boxShadow: isAtLeast("sealing") ? "0 0 60px -12px rgba(184,147,90,0.35)" : "none",
+          borderColor: isAtLeast("sealing") ? "var(--color-accent)" : "var(--color-border)",
+          background: "var(--color-surface)",
+          boxShadow: isAtLeast("sealing")
+            ? "0 20px 40px -16px rgba(54,84,224,0.18)"
+            : "0 8px 24px -12px rgba(0,0,0,0.08)",
           minHeight: 300,
         }}
       >
@@ -114,7 +108,7 @@ export function CertificationStory() {
               className="rounded-full px-2 py-0.5 font-mono text-[9px] transition-colors duration-500"
               style={{
                 color: isAtLeast("sealing") ? "var(--color-verified)" : "var(--color-warning)",
-                background: isAtLeast("sealing") ? "rgba(52,211,153,0.1)" : "rgba(251,146,60,0.1)",
+                background: isAtLeast("sealing") ? "var(--color-verified-soft)" : "var(--color-warning-soft)",
               }}
             >
               {isAtLeast("sealing") ? "Protégé" : "Non vérifiable"}
@@ -123,13 +117,13 @@ export function CertificationStory() {
 
           <div
             className="relative overflow-hidden rounded-lg border p-4"
-            style={{ borderColor: "var(--color-border)" }}
+            style={{ borderColor: "var(--color-border)", background: "var(--color-bg-alt)" }}
           >
             <div className="space-y-2.5">
-              <div className="h-2 w-4/5 rounded-full" style={{ background: "var(--color-border)" }} />
-              <div className="h-2 w-3/5 rounded-full" style={{ background: "var(--color-border)" }} />
-              <div className="h-2 w-full rounded-full" style={{ background: "var(--color-border)" }} />
-              <div className="h-2 w-2/3 rounded-full" style={{ background: "var(--color-border)" }} />
+              <div className="h-2 w-4/5 rounded-full" style={{ background: "var(--color-border-strong)" }} />
+              <div className="h-2 w-3/5 rounded-full" style={{ background: "var(--color-border-strong)" }} />
+              <div className="h-2 w-full rounded-full" style={{ background: "var(--color-border-strong)" }} />
+              <div className="h-2 w-2/3 rounded-full" style={{ background: "var(--color-border-strong)" }} />
             </div>
 
             {stage === "scanning" && (
@@ -137,7 +131,7 @@ export function CertificationStory() {
                 className="absolute inset-x-0 h-16"
                 style={{
                   background:
-                    "linear-gradient(180deg, transparent, rgba(184,147,90,0.35) 45%, transparent)",
+                    "linear-gradient(180deg, transparent, rgba(54,84,224,0.18) 45%, transparent)",
                   animation: "kara-scan 1.15s ease-in-out",
                 }}
               />
@@ -153,7 +147,7 @@ export function CertificationStory() {
             </p>
             <p
               className="font-mono text-[11px] transition-colors duration-500"
-              style={{ color: isAtLeast("hashing") ? "var(--color-gold-bright)" : "var(--color-text-dim)" }}
+              style={{ color: isAtLeast("hashing") ? "var(--color-accent)" : "var(--color-text-dim)" }}
             >
               {isAtLeast("hashing") ? hashDisplay : "en attente…"}
             </p>
@@ -162,22 +156,15 @@ export function CertificationStory() {
           <div
             className="absolute -bottom-4 -right-4 flex h-20 w-20 items-center justify-center rounded-full transition-all duration-700"
             style={{
-              background: isAtLeast("sealing") ? "var(--gradient-gold)" : "var(--color-border)",
-              boxShadow: isAtLeast("sealing")
-                ? "0 6px 20px -6px rgba(184,147,90,0.55), inset 0 1px 1px rgba(255,255,255,0.4)"
-                : "none",
+              background: isAtLeast("sealing") ? "var(--color-text)" : "var(--color-border)",
+              boxShadow: isAtLeast("sealing") ? "0 8px 20px -8px rgba(0,0,0,0.35)" : "none",
               opacity: isAtLeast("sealing") ? 1 : 0,
               transform: isAtLeast("sealing") ? "scale(1) rotate(-10deg)" : "scale(0.5) rotate(-10deg)",
             }}
           >
-            <div
-              className="flex h-[68px] w-[68px] items-center justify-center rounded-full"
-              style={{ background: "var(--color-ink)", border: "1px solid rgba(217,189,134,0.35)" }}
-            >
-              <span className="font-display text-[8px] tracking-wide" style={{ color: "var(--color-gold-bright)" }}>
-                CERTIFIÉ
-              </span>
-            </div>
+            <span className="font-display text-[8px] tracking-wide" style={{ color: "var(--color-bg)" }}>
+              CERTIFIÉ
+            </span>
           </div>
         </div>
 
@@ -197,7 +184,7 @@ export function CertificationStory() {
               <div className="mb-4 flex items-center justify-between">
                 <span
                   className="font-mono text-[9px] uppercase tracking-[0.2em]"
-                  style={{ color: "var(--color-gold)" }}
+                  style={{ color: "var(--color-accent)" }}
                 >
                   Carte d&apos;identité KARA
                 </span>
@@ -236,7 +223,7 @@ export function CertificationStory() {
                         background: [0, 1, 4, 5, 9, 10, 14, 15, 19, 20, 21, 24, 12, 6, 8, 16, 18].includes(
                           i
                         )
-                          ? "var(--color-ink)"
+                          ? "var(--color-bg)"
                           : "transparent",
                       }}
                     />
